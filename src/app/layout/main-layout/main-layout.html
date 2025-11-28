@@ -1,0 +1,106 @@
+<div class="page-wrapper" #pageWrapper>
+  <app-header (clickMenu)="toggleSidebar($event)" [newMenu]="changeProfile"
+    [requestProfile]="requestProfile"></app-header>
+
+  <div class="main-container">
+    <div class="page-header">
+      <div class="toggle-sidebar" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </div>
+
+      <div class="welcome-note ms-2">
+        Bienvenido, <span>{{user.nombres}}</span>
+      </div>
+
+      <!-- Breadcrumb start -->
+      <!-- <ol class="breadcrumb d-xl-flex d-none">
+        <li class="breadcrumb-item breadcrumb-active">
+          <i class="{{page.icon}}"></i>
+          {{page.name}}
+        </li>
+      </ol> -->
+      <!-- Breadcrumb end -->
+
+      <!-- Header actions ccontainer start -->
+      <div class="header-actions-container">
+        <div class="search-container d-md-block d-none">
+          <div class="logo-header-action">
+            <img src="assets/images/logo.png" alt="MDNCH Dashboards" class="img-fluid" />
+          </div>
+        </div>
+        <ul class="header-actions">
+          <!-- desktop -->
+          <li class="d-none d-md-block">
+            <div class="row w-60 float-end">
+              <div class="col-12 mb-1">
+                <span class="user-name float-end">{{user.login}} | <strong>{{profileSession?.profile?.name |
+                    uppercase}}</strong></span>
+              </div>
+              <div class="col-12">
+                <select class="form-select" (change)="onChangeProfile($event)" [ngModel]="profileSession?.id">
+                  @for(item of officesProfiles; track $index){
+                  <option [value]="item.id">{{item.office.oficina +' - '+ item.profile.name}}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- fin desktop -->
+
+          <li class="dropdown">
+            <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown" aria-haspopup="true"
+              onclick="event.preventDefault()">
+              <span class="user-name d-none">{{user.login}} | <strong>ADMINISTRADOR</strong></span>
+              <span class="avatar">
+                <img src="assets/images/user.svg" alt="Admin Templates">
+                <span class="status online"></span>
+              </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userSettings">
+              <div class="header-profile-actions">
+                <a href="#" (click)="logout($event)">Cerrar sesión</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- mobile -->
+      <div class="w-100 d-md-none mt-2">
+        <select class="form-select" (change)="onChangeProfile($event)" [ngModel]="profileSession?.id">
+          @for(item of officesProfiles; track $index){
+          <option [value]="item.id">{{item.office.oficina +' - '+ item.profile.name}}</option>
+          }
+        </select>
+      </div>
+      <!-- fin mobile -->
+
+    </div>
+
+    <div class="content-wrapper-scroll">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-md-12 col-12">
+            <div class="card">
+              @if(page.name != 'Inicio'){
+              <div class="card-header">
+                <h5 class="card-title">
+                  <i class="{{page.icon}}"></i>
+                  {{page.name}}
+                </h5>
+              </div>
+              }
+              <div class="card-body">
+                <router-outlet></router-outlet>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- <app-footer></app-footer> -->
+    </div>
+  </div>
+
+
+</div>

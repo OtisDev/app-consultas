@@ -1,0 +1,104 @@
+<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+
+<div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+  <h5 class="modal-title">{{titleModal | uppercase}}</h5>
+  <button type="button" class="btn-close" aria-label="Close" [mat-dialog-close]="close()"></button>
+</div>
+
+<mat-dialog-content class="mb-4 mat-typography">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <div class="mb-3">
+          <label class="form-label">Area</label>
+          <!-- <input type="text" class="form-control" formControlName="area" placeholder="Ingresa Area"
+          [ngClass]="{'input-error': myForm.get('area')?.invalid && myForm.get('area')?.touched}"
+          > -->
+          <select formControlName="n_oficina" class="form-control">
+            @for(item of officesList; let i = $index; track i){
+              <option [value]="item.n_oficina">{{ item.oficina }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="mb-3">
+          <label class="form-label">Perfil</label>
+          <select formControlName="profile_id" class="form-control">
+            @for(item of profilesList; let i = $index; track i){
+              <option [value]="item.id">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-2 col-12">
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary btn-primary-2 mt-4">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-section-title">Oficinas Asignadas</div>
+    </div>
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm align-middle" [width]="'100%'">
+          <thead class="thead">
+            <tr class="text-center">
+              <th width="10%">N°</th>
+              <th width="45%">Oficina</th>
+              <th width="25%">Perfil</th>
+              <th width="10%">Situación</th>
+              <th width="10%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if(!load){
+              <tr >
+                <td colspan="4" class="text-center">
+                  <img src="assets/images/load.gif" style="width: 50px; margin-right: 10px;">
+                  <strong> Cargando...</strong>
+                </td>
+              </tr>
+            }
+            @for(item of officesData; let i = $index; track i){
+            <tr>
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ item.office.oficina }}</td>
+              <td class="text-center">{{ item.profile.name }}</td>
+              <td class="text-center">
+                <span [innerHTML]="estado(item)"></span>
+              </td>
+              <td class="text-center">
+                <button class="btn btn-sm"
+                [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-danger':item.state.toString() == '1'}"
+                title="{{item.state.toString() == '0' ? 'Activar' : 'Desactivar'}} Perfil para Area"
+                (click)="updateState(item)">
+                  <i class="bi " [ngClass]="{'bi-shield-check': item.state.toString() == '0', 'bi-shield-slash': item.state.toString() == '1'}"></i>
+                </button>
+              </td>
+            </tr>
+            }@empty {
+              @if(load){
+              <tr>
+                <td colspan="5">
+                  <div class="alert alert-danger text-center">
+                    Sin registros
+                  </div>
+                </td>
+              </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>

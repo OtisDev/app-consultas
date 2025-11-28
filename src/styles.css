@@ -1,0 +1,243 @@
+/* You can add global styles to this file, and also import other style files */
+fieldset {
+  border: 1px solid #ced4da;
+  padding: 1.5rem;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+legend {
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0 10px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #f8f9fa;
+  position: absolute;
+  top: -0.6em;
+  left: 0.75rem;
+}
+
+.form-check-inline {
+  margin-right: 1rem;
+}
+
+.result-card {
+  display: none;
+}
+
+.input-error {
+  border: 2px solid red;
+  box-shadow: 0 0 5px red;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* background-color: #e6e6e6 !important; */
+  background-color: #ffffff !important;
+}
+
+.thead th {
+  position: sticky;
+  top: 0;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.btn-sm i {
+  font-size: 1.0rem !important;
+}
+
+input[readonly],
+textarea[readonly] {
+  background-color: #e9ecef;
+  /* Color de fondo similar a un campo deshabilitado */
+  cursor: not-allowed;
+  /* Mostrar cursor de "no permitido" */
+  color: #6c757d;
+  /* Texto en un color más claro */
+  opacity: 1;
+  /* Elimina la opacidad para hacer el texto claro */
+}
+
+.readonly-select {
+  background-color: #e9ecef;
+  /* Fondo gris claro */
+  color: #6c757d;
+  /* Texto claro */
+  cursor: not-allowed;
+  /* Cursor de "no permitido" */
+  pointer-events: none;
+  /* Evita interacción */
+}
+
+input[type="radio"].readonly-radio {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+  /* Mostrar cursor de "no permitido" */
+  pointer-events: none;
+  /* Evitar que el usuario pueda seleccionarlo */
+  opacity: 0.6;
+  /* Hacerlo un poco más transparente */
+}
+
+
+.text-primary-2 {
+  color: #3688fa !important;
+}
+
+.btn-primary-2 {
+  background-color: #3688fa;
+  border-color: #3688fa;
+}
+
+.table-container{
+  position: relative;
+  max-height: 1000px;
+  overflow-y: auto;
+}
+
+table .thead th {
+  background-color: #3688fa;
+  /* background-color: #4267cd; */
+  color: white;
+  position: sticky !important;
+  top: 0;
+  z-index: 1;
+}
+
+.table > thead th{
+  font-weight: 500 !important;
+}
+
+.modal-header .btn-close {
+  background: url('assets/images/cancel.svg') center / 1em auto no-repeat !important;
+}
+
+.pdf-dialog .mat-mdc-dialog-container {
+  /* Ancho fijo en desktop */
+  max-width: 90vw !important;  /* Responsive */
+  height: auto;
+}
+
+.text-blue td{
+  color: #3688fa !important;
+}
+
+.text-green td {
+  color: #26ba4f !important;
+}
+
+.text-red td {
+  color: #f87957 !important;
+}
+
+
+/* nuevo */
+
+/* container */
+
+.sidebar-wrapper .sidebar-menu ul li a i {
+  background: #2B4E86;
+  color: #ffffff;
+}
+
+.content-wrapper-scroll{
+  background: #D2D3D5;
+}
+
+.content-wrapper {
+  padding: 14px 14px 0 14px;
+  height: calc(100vh - 110px);
+}
+
+.breadcrumb .breadcrumb-item i{
+  color : #2B4E86;
+}
+
+.main-container{
+  padding: 0 0 0 210px;
+}
+
+.logo-header-action{
+  width: 40px;
+  margin-left: 10px;
+}
+
+/* menu */
+.sidebar-wrapper{
+  background: #2B4E86 !important;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
+  left: 0px ;
+  top: 0px ;
+  height: 100vh;
+}
+
+.sidebar-wrapper .sidebar-menu ul li a {
+  color: #ffffff ;
+}
+
+.sidebar-wrapper .sidebar-menu ul li.active-page-link a {
+  color: #FFDAB9;
+}
+
+.sidebar-wrapper .sidebar-menu ul li.active a i {
+  color: #FFDAB9;
+}
+
+.sidebar-wrapper .sidebar-menu ul li.active a.current-page{
+  color: #FFDAB9;
+}
+
+@media screen and (max-width: 1024px) {
+  .page-wrapper.toggled .sidebar-wrapper {
+    left: 0px;
+  }
+}
+
+/* fin menu */
+
+.form-select, .form-control{
+  min-height: 0px !important;
+}
+.w-60 {
+  width: 60% !important;
+}
+
+/* de main.css */
+@media (min-width: 768px){
+  .page-header{
+    flex-wrap: nowrap !important;
+  }
+}
+@media (max-width: 767px) {
+
+  .header-actions > li > a.user-settings span.user-name {
+    display: block !important;
+    max-width: 400px !important;
+    margin-right: 10px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .page-header{
+    flex-wrap: wrap !important;
+  }
+
+  .w-50-c {
+    width: 50% !important;
+  }
+
+}

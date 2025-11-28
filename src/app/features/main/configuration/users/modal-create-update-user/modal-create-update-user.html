@@ -1,0 +1,78 @@
+<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+
+<div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+  <h5 class="modal-title">{{titleModal | uppercase}}</h5>
+  <button type="button" class="btn-close" aria-label="Close" [mat-dialog-close]="false"></button>
+</div>
+
+<mat-dialog-content class="mb-4">
+
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-section-title">Datos de Contacto</div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('DNI')?.invalid && myForm.get('DNI')?.touched }">
+          <label class="form-label">DNI</label>
+          <input type="text" class="form-control" formControlName="DNI" placeholder="Ingresa DNI"
+          [required]="myForm.get('DNI')?.invalid && myForm.get('DNI')?.touched ? true : false"
+          >
+        </div>
+      </div>
+      <div class="col-12"></div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('apepaterno')?.invalid && myForm.get('apepaterno')?.touched}">
+          <label class="form-label">Apellido Paterno</label>
+          <input type="text" class="form-control" formControlName="apepaterno" placeholder="Ingresa Apellido Paterno"
+          [required]="myForm.get('apepaterno')?.invalid && myForm.get('apepaterno')?.touched ? true : false" appUppercase
+          >
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('apematerno')?.invalid && myForm.get('apematerno')?.touched}">
+          <label class="form-label">Apellido Materno</label>
+          <input type="text" class="form-control" formControlName="apematerno" placeholder="Ingresa Apellido Materno"
+          [required]="myForm.get('apematerno')?.invalid && myForm.get('apematerno')?.touched ? true : false" appUppercase
+          >
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('nombres')?.invalid && myForm.get('nombres')?.touched}">
+          <label class="form-label">Nombres</label>
+          <input type="text" class="form-control" formControlName="nombres" placeholder="Ingresa Nombres"
+          [required]="myForm.get('nombres')?.invalid && myForm.get('nombres')?.touched ? true : false" appUppercase
+          >
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-section-title">Datos de Acceso</div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('login')?.invalid && myForm.get('login')?.touched}">
+          <label class="form-label">Usuario</label>
+          <input type="text" class="form-control" formControlName="login" placeholder="Ingresa usuario"
+          appUppercase
+          [required]="myForm.get('login')?.invalid && myForm.get('login')?.touched ? true : false"
+          >
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('clave')?.invalid && myForm.get('clave')?.touched}">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-control" formControlName="clave" placeholder="********"
+          [required]="myForm.get('clave')?.invalid && myForm.get('clave')?.touched ? true : false"
+          >
+        </div>
+      </div>
+      <button #btnSubmit type="submit" class="btn btn-primary" style="display: none;">Guardar</button>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: block;">
+    <div class="form-actions-footer">
+        <button class="btn btn-light" type="button" [mat-dialog-close]="false">Cancelar</button>
+        <button class="btn btn-success" type="button" (click)="clickSubmitButton(btnSubmit)">Guardar</button>
+    </div>
+</mat-dialog-actions>

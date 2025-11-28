@@ -1,0 +1,92 @@
+
+<app-filtro-profile (filterChange)="onFilterChange($event)"></app-filtro-profile>
+<div class="row">
+  <div class="col-12">
+      <div class="form-section-title">
+        Resultados
+        <!-- <button class="btn btn-primary btn-primary-2 btn-sm float-end" (click)="openModalUser()" >Agregar Usuario</button> -->
+      </div>
+  </div>
+
+  <div class="col-12">
+    <div class="table-responsive table-container">
+      <table class="table table-bordered table-sm align-middle" [width]="'100%'">
+        <thead class="thead">
+          <tr class="text-center text-sm">
+            <th width="5%">N°</th>
+            <th width="35%">Nombre</th>
+            <th width="15%">Identificador</th>
+            <th width="20%">Se asigno Permisos?</th>
+            <th width="15%">Situacion</th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(!load){
+          <tr >
+            <td colspan="6" class="text-center">
+              <img src="assets/images/load.gif" style="width: 50px; margin-right: 10px;">
+              <strong> Cargando...</strong>
+            </td>
+          </tr>
+          }
+
+          @for(item of data; track $index){
+          <tr>
+            <td class="text-center">
+              {{$index+1}}
+            </td>
+            <td class="text-center">{{item.name}}</td>
+            <td class="text-center">{{item.name_key}}</td>
+
+
+            <td class="text-center">
+              <span [innerHTML]="permisos(item)"></span>
+            </td>
+
+            <td class="text-center">
+              <span [innerHTML]="estado(item)"></span>
+            </td>
+
+            <td class="text-center">
+              <div class="btn-group">
+                <!-- <button class="btn btn-success btn-sm" title="Editar Usuario" (click)="true">
+                  <i class="bi bi-pencil-square"></i>
+                </button> -->
+                <button class="btn btn-info btn-sm" title="Asignar Area y perfil" (click)="true">
+                  <i class="bi bi-diagram-3"></i>
+                </button>
+
+
+                <button class="btn btn-sm"
+                [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-danger':item.state.toString() == '1'}"
+                title="{{item.state.toString() == '0' ? 'Activar' : 'Desactivar'}} Perfil"
+                (click)="activeBloqued(item)">
+                  <i class="bi " [ngClass]="{'bi-shield-check': item.state.toString() == '0', 'bi-shield-slash': item.state.toString() == '1'}"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+          }@empty {
+            @if(load){
+            <tr>
+              <td colspan="12">
+                <div class="alert alert-danger text-center">
+                  Sin registros
+                </div>
+              </td>
+            </tr>
+            }
+          }
+        </tbody>
+      </table>
+
+    </div>
+    <div class="mt-3">
+      <app-paginator *ngIf="loadPaginator" [paginate]="paginate"
+        (pageChange)="onPageChange($event)"></app-paginator>
+    </div>
+  </div>
+</div>
+

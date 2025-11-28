@@ -1,0 +1,11 @@
+.ng-dropdown-panel .scroll-host {
+  padding: 10px !important;
+  background-color: #d6d6df !important;
+}
+
+.filter-container- {
+  position: sticky;
+  top: 0;
+  background: white !important;
+  z-index: 10;
+}

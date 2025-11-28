@@ -1,0 +1,68 @@
+<form [formGroup]="myForm" class="filter-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="form-section-title">Búsqueda</div>
+    </div>
+    <div class="col-xxl-1 col-md-2 col-6">
+      <div class="mb-3">
+        <label for="anio" class="form-label">Año</label>
+        <select id="anio" class="form-select" formControlName="anio">
+          @for(item of years; track $index){
+          <option [value]="item">{{item}}</option>
+          }@empty {
+          <option value="{{topYear}}">-Seleccionar-</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="col-xxl-2 col-md-2 col-6">
+      <div class="mb-3">
+        <label class="form-label">N° Expediente</label>
+        <input type="text" class="form-control" formControlName="codigo" appOnlyNumber>
+      </div>
+    </div>
+    <div class="col-12 col-md-5" [ngClass]="{'col-xxl-6': !isAdmin, 'col-xxl-4': isAdmin }">
+      <div class="mb-3">
+        <label class="form-label">Asunto</label>
+        <input type="text" class="form-control" formControlName="asunto">
+      </div>
+    </div>
+    <div class="col-12 col-md-3" [ngClass]="{'col-xxl-3': !isAdmin, 'col-xxl-2': isAdmin }">
+      <div class="mb-3">
+        <label class="form-label">N° DNI/RUC Solicitante</label>
+        <input type="text" class="form-control" formControlName="n_solicitante" appOnlyNumber>
+      </div>
+    </div>
+    @if(isAdmin){
+    <div class="col-xxl-3 col-md-12 col-sm-12 col-12">
+      <label class="form-label">Filtrar por estados</label>
+      <div class="mb-3">
+        <div class="btn-group" role="group">
+          <ng-container *ngFor = "let item of buttonsArray; let idx = index">
+            <input type="radio" class="btn-check" name="option"
+              id="opt-{{idx}}" autocomplete="off"
+              [checked]="item.checked"
+              (change)="setFocus(item.group)"
+
+            >
+            <label class="btn btn-outline-{{item.class}} btn-sm" for="opt-{{idx}}">{{item.label }}</label>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+    }
+
+    <div class="col-12 mb-3">
+
+      <button type="button" (click)="onApplyFilter()" class="btn btn-primary btn-primary-2 btn-sm me-2">
+        Buscar
+      </button>
+      <button type="button" (click)="resetForm()" class="btn btn-warning btn-sm">
+        Limpiar
+      </button>
+
+
+    </div>
+  </div>
+</form>
