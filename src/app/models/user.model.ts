@@ -1,18 +1,14 @@
 import { Area } from "./area.model";
 import { Menu, MenuItem } from "./menu-item.model";
 import { Profile } from "./profile.model";
-import { Paginate, Response, ResponsePaginated } from "./response.model";
+import { Paginate, Paginated, Response, ResponsePaginated } from "./response.model";
 
 export type User = {
-  DNI: string;
-  apepaterno: string;
-  apematerno: string;
-  nombres: string;
-  nom_comp: string;
-  login:string;
-  estado: string;
-  area_asignada: string;
-  Nivel: string;
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  role: string;
   state: number;
 }
 
@@ -44,7 +40,7 @@ export interface TokenResponse{
 }
 
 export type UserSession = TokenResponse & {
-  user: UserR;
+  user: User;
 }
 
 export interface UserLoginRequest {
@@ -55,15 +51,19 @@ export interface UserLoginRequest {
 export type UserResponse = Response<UserSession>;
 export type UsersResponse = ResponsePaginated<UserR[]>;
 
-export type UsersRequest = {
-  page?: number;
-  per_page?: number;
+export type UsersRequest = Paginated & {
   dni: string;
   apepaterno: string;
   apematerno: string;
   nombres:string;
   nivel: string;
   state : string;
+};
+
+export type UserFilterRequest = Paginated & {
+  name: string;
+  username: string;
+  state: number;
 };
 
 export type UserPermisionsRequest = {

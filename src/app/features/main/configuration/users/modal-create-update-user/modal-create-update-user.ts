@@ -6,6 +6,8 @@ import { User } from '../../../../../models/user.model';
 import { UserService } from '../../../../../core/services/user/user-service';
 import Swal from 'sweetalert2';
 import { markAllControlsAsTouched } from '../../../../../helpers/utils.helper';
+import { Role } from '../../../../../models/role.model';
+import { ROLES_MOCKS } from '../../../../../mocks/roles.mocks';
 
 type ModalData = {
   action: 'create' | 'update';
@@ -24,6 +26,7 @@ export class ModalCreateUpdateUser {
   action: string = 'create';
   titleModal: string = 'Crear Usuario';
   isLoading: boolean = false;
+  roles! : Role[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: ModalData, private fb: FormBuilder,
@@ -33,13 +36,15 @@ export class ModalCreateUpdateUser {
     this.action = data.action;
     this.titleModal = data.action === 'create' ? 'Crear Usuario' : 'Actualizar Usuario';
     this.myForm = this.fb.group({
-      DNI: [this.action === 'create' ? '' : data.user?.DNI, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
-      apepaterno: [this.action === 'create' ? '' : data.user?.apepaterno, [Validators.required]],
-      apematerno: [this.action === 'create' ? '' : data.user?.apematerno, [Validators.required]],
-      nombres: [this.action === 'create' ? '' : data.user?.nombres, [Validators.required]],
-      login: [this.action === 'create' ? '' : data.user?.login, [Validators.required]],
-      clave: ['', this.action === 'create' ? [Validators.required] : []]
+      name: [this.action === 'create' ? '' : data.user?.name, [Validators.required]],
+      email: [this.action === 'create' ? '' : data.user?.email, [Validators.required]],
+      role: [this.action === 'create' ? '' : data.user?.role, [Validators.required]],
+      username: [this.action === 'create' ? '' : data.user?.username, [Validators.required]],
+      password: ['', this.action === 'create' ? [Validators.required] : []]
     });
+
+    this.roles = ROLES_MOCKS;
+    this.roles.unshift({key: '', name: '-SELECCIONAR-'});
   }
 
   clickSubmitButton(btnSubmit: HTMLButtonElement) {

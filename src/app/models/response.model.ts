@@ -1,3 +1,8 @@
+export interface Paginated {
+  page: number;
+  per_page: number;
+}
+
 export type Paginate = {
   current_page: number;
   last_page: number;

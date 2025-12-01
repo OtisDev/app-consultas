@@ -8,6 +8,8 @@ import { UserService } from '../../../core/services/user/user-service';
 import { LoadingOverlay } from '../../../shared/components/loading-overlay/loading-overlay';
 import { UserPermisionsRequest } from '../../../models/user.model';
 import Swal from 'sweetalert2';
+import { MENUITEMS_MOCKS } from '../../../mocks/menu.mock';
+import { MenuService } from '../../../core/services/menu/menu-service';
 
 @Component({
   selector: 'app-header',
@@ -26,11 +28,13 @@ export class Header {
   activeIndex: number | null = null;
   activeUrl: string = '';
   routerUrl: string = '';
+  profile : string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private menuService : MenuService
   ) {
     this.loadMenuItems();
   }
@@ -41,7 +45,11 @@ export class Header {
   }
 
   private loadMenuItems() {
-    this.menuItems = this.authService.getModules();
+    //this.menuItems = MENUITEMS_MOCKS;
+    this.profile = this.userService.getProfileKey();
+    this.menuItems = this.menuService.getMenuItems(this.profile);
+
+    console.log('Menu Items cargados en header', this.menuItems);
   }
 
   pressClick(hasChildren: boolean = false) {
@@ -71,35 +79,11 @@ export class Header {
     const req : UserPermisionsRequest | null = changes['requestProfile'].currentValue;
 
     if(req){
-      this.getPermisionsModules(req);
+
     }
 
   }
 
-  getPermisionsModules(permisionRequest: UserPermisionsRequest) {
-    this.loading = true;
-    this.userService.getPermisionsModules(permisionRequest).subscribe(response => {
-      if (!response.success) {
-        this.loading = false;
-        Swal.fire("Error", response.message, "error");
-        return;
-      }
 
-      const modules: Menu[] = response.data;
-
-      this.loading = false;
-
-      this.authService.savePermissions(modules);
-      Swal.fire("Correcto!", "Se hizo el cambio de perfil correctamente.", "success").then(() => {
-        this.loadMenuItems();
-        this.router.navigate(['/']);
-      });
-
-    }, error => {
-      this.loading = false;
-      Swal.fire("Error", "Error en la comunicacion con el servidor.", "error");
-      console.log('Error al obtener permisos de módulos:', error);
-    });
-  }
 
 }

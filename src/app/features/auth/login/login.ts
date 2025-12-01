@@ -41,23 +41,15 @@ export class Login {
         Swal.fire("Error", response.message, "error");
         return;
       }
-      const offices = response.data.user.offices_profiles ?? [];
-
-      if (offices.length == 0) {
-        this.loading = false;
-        Swal.fire("Error", "El usuario no tiene oficinas asignadas. Contacte con el administrador.", "error");
-        return;
-      }
 
       this.authService.saveLocalStorage(response.data);
+      this.userService.setProfileSession(response.data.user.role)
 
-      const permisionRequest: UserPermisionsRequest = {
-        n_oficina: offices[0].n_oficina,
-        profile_id: offices[0].profile_id
-      }
-      this.userService.setProfileSession(offices[0]);
-      this.authService.saveOfficesProfiles(offices);
-      this.getPermisionsModules(permisionRequest, true);
+      this.loading = false;
+
+      Swal.fire("Acceso correcto", "Usuario autenticado correctamente", "success").then(() => {
+        this.router.navigate(['/']);
+      });
 
     }, error => {
       Swal.fire("Error", "Error en la comunicacion con el servidor.", "error");
@@ -68,29 +60,6 @@ export class Login {
 
   changeValueShowPass() {
     this.showPass = this.showPass ? false : true;
-  }
-
-  getPermisionsModules(permisionRequest: UserPermisionsRequest, isLogin: boolean = false) {
-    this.userService.getPermisionsModules(permisionRequest).subscribe(response => {
-      if (!response.success) {
-        this.loading = false;
-        Swal.fire("Error", response.message, "error");
-        return;
-      }
-
-      const modules : Menu[] = response.data;
-      if (isLogin) {
-        this.loading = false;
-        this.authService.savePermissions(modules);
-        Swal.fire("Acceso correcto", "Usuario autenticado correctamente", "success").then(() => {
-          this.router.navigate(['/']);
-        });
-      }
-    }, error => {
-      this.loading = false;
-      Swal.fire("Error", "Error en la comunicacion con el servidor.", "error");
-      console.log('Error al obtener permisos de módulos:', error);
-    });
   }
 
 }

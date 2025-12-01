@@ -7,6 +7,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  let expectedRoles = route.data['allow'] as string[];
+  console.log('Expected roles for this route:', route);
+  return false;
+  const roles = expectedRoles.includes('all') ? ['AS','SUP','U'] : expectedRoles;
+
   if(!authService.isLoggedIn()){
     router.navigate(['/auth/login']);
     return false;
@@ -14,8 +19,11 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   const allowAccess: string[] = ['/denied-access','/'];
 
-  if(!authService.hasAccess(state.url) && !allowAccess.includes(state.url)) {
-    router.navigate(['/denied-access']);
+
+  if (authService.hasAnyRole(roles)) {
+    return true;
+  } else {
+    router.navigate(['/access-denied']);
     return false;
   }
 

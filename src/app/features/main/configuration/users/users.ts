@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalCreateUpdateUser } from './modal-create-update-user/modal-create-update-user';
-import { ModalOfficesProfiles } from './modal-offices-profiles/modal-offices-profiles';
 
 @Component({
   selector: 'app-users',
@@ -79,7 +78,7 @@ export class Users {
   }
 
   nivel(user: User): string {
-    switch (user.Nivel) {
+    switch (user.role) {
       case 'AS':
         return 'Admin';
       case 'CO':
@@ -150,20 +149,6 @@ export class Users {
     });
   }
 
-  openModalOfficesProfiles(user: User) {
-
-    const myDialog = this.dialog.open(ModalOfficesProfiles,{
-      width: '800px',
-      data: user
-    });
-
-    myDialog.afterClosed().subscribe( (result : boolean) => {
-      if (result) {
-        this.loadAllUsers();
-      }
-    });
-  }
-
   activeBloquedUser(user: User) {
     const action = user.state.toString() === '1' ? 'bloquear' : 'activar';
 
@@ -178,13 +163,13 @@ export class Users {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.updateUserState(user.DNI, user.state.toString() === '1' ? 0 : 1);
+        this.updateUserState(user.id, user.state.toString() === '1' ? 0 : 1);
       }
     });
   }
 
-  private updateUserState(dni: string, state: number) {
-    this.userService.updateStateUser(dni, state).subscribe({
+  private updateUserState(id: number, state: number) {
+    this.userService.updateStateUser(id, state).subscribe({
       next: (response) => {
         if (!response.success) {
           Swal.fire({
@@ -212,11 +197,27 @@ export class Users {
     });
   }
 
-  profilesAssigned(user : UserR) : SafeHtml {
+  profilesAssigned(user : User) : string {
 
-    const profiles = user.offices_profiles.map(op => op.profile.name);
-    const html = profiles.length > 0 ? profiles.join(' <b>|</b> ') : '- Ninguno -';
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    const profile = user.role;
+    let text = "";
+
+    switch(profile){
+      case 'AS':
+        text = "Administrador";
+        break;
+      case 'CO':
+        text = "Coordinador";
+        break;
+      case 'U':
+        text = "Usuario";
+        break;
+      default:
+        text = " - Ninguno - ";
+        break;
+    }
+
+    return text;
   }
 
 }

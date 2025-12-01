@@ -12,42 +12,39 @@
       <div class="col-12">
         <div class="form-section-title">Datos de Contacto</div>
       </div>
-      <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('DNI')?.invalid && myForm.get('DNI')?.touched }">
-          <label class="form-label">DNI</label>
-          <input type="text" class="form-control" formControlName="DNI" placeholder="Ingresa DNI"
-          [required]="myForm.get('DNI')?.invalid && myForm.get('DNI')?.touched ? true : false"
-          >
-        </div>
-      </div>
-      <div class="col-12"></div>
-      <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('apepaterno')?.invalid && myForm.get('apepaterno')?.touched}">
-          <label class="form-label">Apellido Paterno</label>
-          <input type="text" class="form-control" formControlName="apepaterno" placeholder="Ingresa Apellido Paterno"
-          [required]="myForm.get('apepaterno')?.invalid && myForm.get('apepaterno')?.touched ? true : false" appUppercase
+      <div class="col-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('name')?.invalid && myForm.get('name')?.touched}">
+          <label class="form-label">Nombres y Apellidos</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Ingresa Nombre"
+          [required]="myForm.get('name')?.invalid && myForm.get('name')?.touched ? true : false" appUppercase
           >
         </div>
       </div>
       <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('apematerno')?.invalid && myForm.get('apematerno')?.touched}">
-          <label class="form-label">Apellido Materno</label>
-          <input type="text" class="form-control" formControlName="apematerno" placeholder="Ingresa Apellido Materno"
-          [required]="myForm.get('apematerno')?.invalid && myForm.get('apematerno')?.touched ? true : false" appUppercase
-          >
-        </div>
-      </div>
-      <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('nombres')?.invalid && myForm.get('nombres')?.touched}">
-          <label class="form-label">Nombres</label>
-          <input type="text" class="form-control" formControlName="nombres" placeholder="Ingresa Nombres"
-          [required]="myForm.get('nombres')?.invalid && myForm.get('nombres')?.touched ? true : false" appUppercase
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('email')?.invalid && myForm.get('email')?.touched}">
+          <label class="form-label">Email</label>
+          <input type="text" class="form-control" formControlName="email" placeholder="Ingresa Email"
+          [required]="myForm.get('email')?.invalid && myForm.get('email')?.touched ? true : false" appUppercase
           >
         </div>
       </div>
       <div class="col-12">
         <div class="form-section-title">Datos de Acceso</div>
       </div>
+      <div class="col-md-6 col-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('role')?.invalid && myForm.get('role')?.touched}">
+          <label class="form-label">Perfil</label>
+          <input type="text" class="form-control" formControlName="login" placeholder="Ingresa usuario"
+          appUppercase
+          [required]="myForm.get('login')?.invalid && myForm.get('login')?.touched ? true : false"
+          >
+          <select class="form-select mt-2" formControlName="role"
+          [required]="myForm.get('role')?.invalid && myForm.get('role')?.touched ? true : false">
+            <option *ngFor="let role of roles" [value]="role.key">{{role.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12"></div>
       <div class="col-md-6 col-sm-12">
         <div class="mb-3" [ngClass]="{'was-validated': myForm.get('login')?.invalid && myForm.get('login')?.touched}">
           <label class="form-label">Usuario</label>

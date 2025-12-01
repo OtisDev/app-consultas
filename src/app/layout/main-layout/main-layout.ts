@@ -39,14 +39,8 @@ export class MainLayout {
 
   ngOnInit(): void {
     this.user = this.authService.getUserData() as User;
-    this.officesProfiles = this.authService.getOfficesProfiles();
-    const profile = this.userService.getProfileSession()
 
-    if(this.officesProfiles.length > 0 && !profile){
-      this.profileSession = this.officesProfiles[0];
-    }else{
-      this.profileSession = profile;
-    }
+    const profile = this.userService.getProfileKey()
 
   }
 
@@ -119,20 +113,7 @@ export class MainLayout {
   }
 
   onChangeProfile(event : any){
-    const profile = this.officesProfiles.find(op => op.id.toString() === event.target.value);
 
-    if(!profile){
-      Swal.fire("Error","Perfil no encontrado.","error");
-      return;
-    }
-    this.requestProfile = {
-      n_oficina: profile.n_oficina,
-      profile_id: profile.profile_id
-    };
-
-    this.profileSession = profile;
-
-    this.userService.setProfileSession(profile);
   }
 
 }

@@ -7,7 +7,8 @@ export const mainRoutes: Routes = [
       import('../features/main/home/home').then(m => m.Home),
     data:{
       name:"Inicio",
-      icon: 'bi bi-house'
+      icon: 'bi bi-house',
+      allow :['all']
     }
   },
   {
@@ -16,20 +17,10 @@ export const mainRoutes: Routes = [
       import('../features/main/configuration/users/users').then(m => m.Users),
     data:{
       name:"Usuarios",
-      icon: 'bi bi-gear'
+      icon: 'bi bi-gear',
+      allow :['AS','SUP']
     }
   },
-
-  {
-    path: 'clientes',
-    loadComponent: () =>
-      import('../features/main/configuration/profiles/profiles').then(m => m.Profiles),
-    data:{
-      name:"Clientes",
-      icon: 'bi bi-grid'
-    }
-  },
-
   {
     path: 'denied-access',
     loadComponent: () =>

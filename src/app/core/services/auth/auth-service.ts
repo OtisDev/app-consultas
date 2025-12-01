@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_ROUTES } from '../../../config/api-routes';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { UserLoginRequest, UserR, UserResponse, UserSession, UserModule, TokenResponse, UserOfficeProfile } from '../../../models/user.model';
+import { UserLoginRequest, UserR, UserResponse, UserSession, UserModule, TokenResponse, UserOfficeProfile, User } from '../../../models/user.model';
 import { Menu, MenuItem } from '../../../models/menu-item.model';
 import { Response } from '../../../models/response.model';
 import { Router } from '@angular/router';
@@ -13,12 +13,12 @@ import Swal from 'sweetalert2';
 })
 export class AuthService {
 
-  user!: UserR;
+  user!: User;
   token: string | null = null;
   private modules!: MenuItem[];
   permissions!: Menu[];
   officesProfiles: UserOfficeProfile[] = [];
-
+  rolesKeys: string[] = [];
 
   constructor(
     private http: HttpClient,
@@ -28,27 +28,21 @@ export class AuthService {
   }
 
   init() {
-    const storage = sessionStorage.getItem('user');
+    const user : User | null  = this.getUserData();
 
-    if (storage) {
-      const userData = JSON.parse(storage);
-
-      if(userData.user){
-        this.user = userData.user;
-        this.token = this.getToken();
-        this.permissions = this.getPermissions();
-      }
-
+    if (user) {
+      this.user = user;
+      this.token = this.getToken();
     }
 
   }
 
-  getUserData() : UserR | null {
+  getUserData() : User | null {
     const storage = sessionStorage.getItem('user');
 
     if (storage) {
       const userData = JSON.parse(storage);
-      return userData.user;
+      return userData;
     }
 
     return null;
@@ -56,12 +50,14 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.user ? true : false;
+    const user : User | null = this.getUserData();
+    return user ? true : false;
   }
 
-  saveLocalStorage(user: UserSession) {
-    sessionStorage.setItem('user', JSON.stringify(user));
-    this.saveToken(user.access_token);
+  saveLocalStorage(userData: UserSession) {
+    sessionStorage.setItem('user', JSON.stringify(userData.user));
+    this.rolesKeys = [userData.user.role];
+    this.saveToken(userData.access_token);
     this.init();
   }
 
@@ -77,40 +73,8 @@ export class AuthService {
     return null;
   }
 
-  saveOfficesProfiles(officesProfiles: UserOfficeProfile[]) {
-    sessionStorage.setItem('offices_profiles', JSON.stringify(officesProfiles));
-  }
-
-  getOfficesProfiles(): UserOfficeProfile[] {
-    const profiles = sessionStorage.getItem('offices_profiles');
-    if (profiles) {
-      return JSON.parse(profiles);
-    }
-    return [];
-  }
-
-  savePermissions(permissions: Menu[]) {
-    sessionStorage.setItem('user_permissions', JSON.stringify(permissions));
-  }
-
-  getPermissions(): Menu[] {
-    const permissions = sessionStorage.getItem('user_permissions');
-    if (permissions) {
-      return JSON.parse(permissions);
-    }
-    return [];
-  }
-
   login(request: UserLoginRequest): Observable<UserResponse> {
     return this.http.post<UserResponse>(API_ROUTES.AUTH.LOGIN, request);
-  }
-
-  isAdmin(): boolean {
-    return this.user.Nivel === 'AS' ? true : false;
-  }
-
-  isAuthorized(): boolean {
-    return this.user.Nivel === 'AS' || this.user.Nivel === 'CO' ? true : false;
   }
 
   hasAccess(route: string): boolean {
@@ -153,24 +117,6 @@ export class AuthService {
     return modules;
   }
 
-  getModules(): MenuItem[] {
-    this.permissions = this.getPermissions();
-    this.modules = this.loadModules();
-    let insert = {
-      id: 0,
-      name: 'Inicio',
-      icon: 'bi bi-house',
-      path: '/',
-      parent_id: null,
-      children: []
-    };
-
-    const findInit = this.modules.find(m => m.id === insert.id);
-    if(!findInit) this.modules.unshift(insert);
-
-    return this.modules;
-  }
-
   refreshToken(): Observable<Response<TokenResponse>> {
     return this.http.post<Response<TokenResponse>>(API_ROUTES.AUTH.REFRESH, {}).pipe(
       map(response => {
@@ -203,6 +149,10 @@ export class AuthService {
         this.router.navigate(['/login']);
       });
     }
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    return roles.some(role => this.rolesKeys.includes(role));
   }
 
 }

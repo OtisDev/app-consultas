@@ -5,21 +5,26 @@ import { HttpClient } from '@angular/common/http';
 import { API_ROUTES } from '../../../config/api-routes';
 import { toHttpParams } from '../../../helpers/utils.helper';
 import { ResponseWithoutData } from '../../../models/response.model';
+import { Role } from '../../../models/role.model';
+import { ROLES_MOCKS } from '../../../mocks/roles.mocks';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  private roles : Role[] = [];
+
   constructor(private http: HttpClient){
-
+    this.roles = ROLES_MOCKS;
   }
 
-  setProfileSession(profileSession: UserOfficeProfile){
-    sessionStorage.setItem('profileSession', JSON.stringify(profileSession));
+  setProfileSession(profileSession: string){
+    let role : Role = this.roles.find(r => r.key === profileSession)!;
+    sessionStorage.setItem('profileSession', JSON.stringify(role));
   }
 
-  getProfileSession() : UserOfficeProfile | null {
+  getProfileSession() : Role | null {
     const storage = sessionStorage.getItem('profileSession');
     if (storage) {
       return JSON.parse(storage);
@@ -28,13 +33,8 @@ export class UserService {
   }
 
   getProfileKey() : string {
-    const profile = this.getProfileSession();
-    return profile ? profile.profile.name_key : '';
-  }
-
-  getActiveOffice() : string {
-    const profile = this.getProfileSession();
-    return profile ? profile.n_oficina : '';
+    const profile : Role = this.getProfileSession()!;
+    return profile ? profile.key : '';
   }
 
   isAdmin(): boolean {
@@ -52,10 +52,6 @@ export class UserService {
     return this.http.get<UsersResponse>(API_ROUTES.USER.GET_ALL, {params});
   }
 
-  getPermisionsModules(request: UserPermisionsRequest) : Observable<UserPermissionsResponse>{
-    return this.http.get<UserPermissionsResponse>(API_ROUTES.USER.GET_PERMISSIONS_MODULES, {params: toHttpParams(request)});
-  }
-
   createUser(request : UserCreateUpdateRequest) : Observable<ResponseWithoutData>{
     return this.http.post<ResponseWithoutData>(API_ROUTES.USER.CREATE, request);
   }
@@ -64,26 +60,11 @@ export class UserService {
     return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE, request);
   }
 
-  getOfficesProfiles(dni: string): Observable<UserOfficeProfileResponse> {
-    return this.http.get<UserOfficeProfileResponse>(API_ROUTES.USER.GET_OFFICES_PROFILES(dni));
-  }
-
-  assignOfficeProfile(request : UserAssignOfficeProfileRequest) : Observable<ResponseWithoutData>{
-    return this.http.post<ResponseWithoutData>(API_ROUTES.USER.ASSIGN_OFFICE_PROFILE, request);
-  }
-
-  updateStateOfficeProfile(id: number, state: number) : Observable<ResponseWithoutData>{
-    const body = {
-      state:state
-    };
-    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE_STATE_OFFICE_PROFILE(id), body);
-  }
-
-  updateStateUser(dni: string, state: number) : Observable<ResponseWithoutData>{
+  updateStateUser(id: number, state: number) : Observable<ResponseWithoutData>{
     const body = {
       state:state.toString()
     };
-    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE_STATE(dni), body);
+    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE_STATE(id), body);
   }
 
 }

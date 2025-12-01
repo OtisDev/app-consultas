@@ -11,11 +11,8 @@ export const API_ROUTES = {
     CREATE: `${environment.apiUrl}/users/create`,
     UPDATE: `${environment.apiUrl}/users/update`,
     GET_USER: (username : string) => `${environment.apiUrl}/users/info/${username}`,
-    GET_PERMISSIONS_MODULES: `${environment.apiUrl}/user/modules`,
-    UPDATE_STATE: (dni : string) => `${environment.apiUrl}/users/${dni}/update-state`,
-    ASSIGN_OFFICE_PROFILE: `${environment.apiUrl}/users/assign-office-profile`,
-    GET_OFFICES_PROFILES: (dni : string) => `${environment.apiUrl}/users/${dni}/offices-profiles`,
-    UPDATE_STATE_OFFICE_PROFILE: (id : number) => `${environment.apiUrl}/users/${id}/offices-profiles/update-state`,
+    UPDATE_STATE: (id : number) => `${environment.apiUrl}/users/toggle-active/${id}`,
+
   },
   EXPEDIENT: {
     CREATE: `${environment.apiUrl}/expedient/create`,

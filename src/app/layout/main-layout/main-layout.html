@@ -9,7 +9,7 @@
       </div>
 
       <div class="welcome-note ms-2">
-        Bienvenido, <span>{{user.nombres}}</span>
+        Bienvenido, <span>{{user.name}}</span>
       </div>
 
       <!-- Breadcrumb start -->
@@ -33,16 +33,17 @@
           <li class="d-none d-md-block">
             <div class="row w-60 float-end">
               <div class="col-12 mb-1">
-                <span class="user-name float-end">{{user.login}} | <strong>{{profileSession?.profile?.name |
-                    uppercase}}</strong></span>
+                <span class="user-name float-end">{{user.username}}
+                  <!-- | <strong>{{profileSession?.profile?.name | uppercase}}</strong> -->
+                </span>
               </div>
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <select class="form-select" (change)="onChangeProfile($event)" [ngModel]="profileSession?.id">
                   @for(item of officesProfiles; track $index){
                   <option [value]="item.id">{{item.office.oficina +' - '+ item.profile.name}}</option>
                   }
                 </select>
-              </div>
+              </div> -->
             </div>
           </li>
           <!-- fin desktop -->
@@ -50,7 +51,7 @@
           <li class="dropdown">
             <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown" aria-haspopup="true"
               onclick="event.preventDefault()">
-              <span class="user-name d-none">{{user.login}} | <strong>ADMINISTRADOR</strong></span>
+              <span class="user-name d-none">{{user.name}} </span>
               <span class="avatar">
                 <img src="assets/images/user.svg" alt="Admin Templates">
                 <span class="status online"></span>
@@ -66,13 +67,13 @@
       </div>
 
       <!-- mobile -->
-      <div class="w-100 d-md-none mt-2">
+      <!-- <div class="w-100 d-md-none mt-2">
         <select class="form-select" (change)="onChangeProfile($event)" [ngModel]="profileSession?.id">
           @for(item of officesProfiles; track $index){
           <option [value]="item.id">{{item.office.oficina +' - '+ item.profile.name}}</option>
           }
         </select>
-      </div>
+      </div> -->
       <!-- fin mobile -->
 
     </div>

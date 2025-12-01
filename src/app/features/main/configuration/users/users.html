@@ -16,19 +16,17 @@
         <thead class="thead">
           <tr class="text-center text-sm">
             <th width="5%">N°</th>
-            <th width="8%">DNI</th>
-            <th width="25%">Apellidos y Nombres</th>
-            <th width="10%">Usuario</th>
-            <th width="10%">Situacion</th>
-            <th width="22%">Perfiles</th>
-            <th width="10%">Área asignada</th>
+            <th width="30%">Nombres Y Apellidos</th>
+            <th width="15%">Usuario</th>
+            <th width="20%">Situacion</th>
+            <th width="20%">Perfil</th>
             <th width="10%"></th>
           </tr>
         </thead>
         <tbody>
           @if(!load){
           <tr>
-            <td colspan="12" class="text-center">
+            <td colspan="6" class="text-center">
               <img src="assets/images/load.gif" style="width: 50px; margin-right: 10px;">
               <strong> Cargando...</strong>
             </td>
@@ -40,51 +38,38 @@
             <td class="text-center">
               {{$index+1}}
             </td>
-            <td class="text-center">{{item.DNI}}</td>
-            <td class="text-center">{{item.apepaterno + ' ' + item.apematerno + ', ' + item.nombres}}</td>
-            <td class="text-center">{{item.login}}</td>
-
+            <td class="text-center">{{item.name}}</td>
+            <td class="text-center">{{item.username}}</td>
             <td class="text-center">
               <span [innerHTML]="estado(item)"></span>
             </td>
             <td class="text-center">
-              <span [innerHTML]="profilesAssigned(item)"></span>
-            </td>
-            <td class="text-center">
-              <span [innerHTML]="areaAsignada(item)"></span>
+              {{profilesAssigned(item)}}
             </td>
             <td class="text-center">
               <div class="btn-group">
-                <button class="btn btn-success btn-sm" title="Editar Usuario" (click)="openModalUser(item)">
+                <button class="btn btn-info btn-sm" title="Editar Usuario" (click)="openModalUser(item)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Asignar Area y perfil"
-                  (click)="openModalOfficesProfiles(item)">
-                  <i class="bi bi-diagram-3"></i>
-                </button>
-                @if(item.state.toString() == '0'){
-                <button class="btn btn-success btn-sm" title="Activar Usuario" (click)="activeBloquedUser(item)">
-                  <i class="bi bi-person-check"></i>
-                </button>
-                }@else {
-                <button class="btn btn-danger btn-sm" title="Bloquear Usuario" (click)="activeBloquedUser(item)">
-                  <i class="bi bi-person-x"></i>
-                </button>
-                }
 
+                <button class="btn btn-sm"
+                [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-danger': item.state.toString() == '1'}" title="Bloquear Usuario"
+                (click)="activeBloquedUser(item)">
+                  <i class="bi " [ngClass]="{'bi-person-check': item.state.toString() == '0', 'bi-person-x': item.state.toString() == '1'}"></i>
+                </button>
               </div>
             </td>
           </tr>
           }@empty {
-          @if(load){
-          <tr>
-            <td colspan="12">
-              <div class="alert alert-danger text-center">
-                Sin registros
-              </div>
-            </td>
-          </tr>
-          }
+            @if(load){
+            <tr>
+              <td colspan="6">
+                <div class="alert alert-danger text-center">
+                  Sin registros
+                </div>
+              </td>
+            </tr>
+            }
           }
         </tbody>
       </table>
