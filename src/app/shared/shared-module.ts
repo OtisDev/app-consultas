@@ -15,6 +15,7 @@ import { Paginator } from './components/paginator/paginator';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Uppercase } from '../core/directives/uppercase';
 import { OnlyNumber } from '../core/directives/only-number';
+import { Loader } from './components/loader/loader';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { OnlyNumber } from '../core/directives/only-number';
     MatDialogActions,
     MatDialogClose,
     Uppercase,
-    OnlyNumber
+    OnlyNumber,
+    Loader
   ],
   exports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { OnlyNumber } from '../core/directives/only-number';
     MatDialogActions,
     MatDialogClose,
     Uppercase,
-    OnlyNumber
+    OnlyNumber,
+    Loader
   ],
 })
 export class SharedModule { }

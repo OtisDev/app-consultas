@@ -1,4 +1,4 @@
-import { Area } from "./area.model";
+
 import { Menu, MenuItem } from "./menu-item.model";
 import { Profile } from "./profile.model";
 import { Paginate, Paginated, Response, ResponsePaginated } from "./response.model";
@@ -17,7 +17,7 @@ export type UserOfficeProfile = {
   n_oficina: string;
   profile_id: number;
   usuario_dni: string;
-  office: Area;
+  office: any;
   profile: Profile;
   state: number;
 }
@@ -49,16 +49,9 @@ export interface UserLoginRequest {
 }
 
 export type UserResponse = Response<UserSession>;
-export type UsersResponse = ResponsePaginated<UserR[]>;
+export type UsersResponse = ResponsePaginated<User[]>;
 
-export type UsersRequest = Paginated & {
-  dni: string;
-  apepaterno: string;
-  apematerno: string;
-  nombres:string;
-  nivel: string;
-  state : string;
-};
+
 
 export type UserFilterRequest = Paginated & {
   name: string;
@@ -74,12 +67,10 @@ export type UserPermisionsRequest = {
 export type UserPermissionsResponse = Response<Menu[]>;
 
 export type UserCreateUpdateRequest = {
-  DNI: string;
-  apepaterno: string;
-  apematerno: string;
-  nombres: string;
-  login: string;
-  clave: string;
+  name: string;
+  username: string;
+  email: string;
+  role: string;
 };
 
 export type UserAssignOfficeProfileRequest = {

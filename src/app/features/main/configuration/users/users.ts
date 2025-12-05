@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared-module';
 import { FiltroUser } from "./filtro-user/filtro-user";
-import { User, UserR, UsersRequest } from '../../../../models/user.model';
+import { User, UserFilterRequest, UserR } from '../../../../models/user.model';
 import { Paginate } from '../../../../models/response.model';
 import { UserService } from '../../../../core/services/user/user-service';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalCreateUpdateUser } from './modal-create-update-user/modal-create-update-user';
+
 
 @Component({
   selector: 'app-users',
@@ -18,12 +19,12 @@ import { ModalCreateUpdateUser } from './modal-create-update-user/modal-create-u
 export class Users {
 
   isLoading: boolean = false;
-  filters!: UsersRequest;
+  filters!: UserFilterRequest;
   paginate!: Paginate;
   loadPaginator: boolean = false;
   load: boolean = false;
 
-  data: UserR[] = [];
+  data: User[] = [];
 
   constructor(
     private userService: UserService,
@@ -37,10 +38,7 @@ export class Users {
     this.data = [];
 
     this.userService.getUsers(this.filters).subscribe(response => {
-      this.data = response.data;
-      this.load = true;
-      this.loadPaginator = true;
-      this.paginate = response.meta;
+
       if (!response.success) {
         Swal.fire({
           icon: 'warning',
@@ -50,6 +48,12 @@ export class Users {
 
         return;
       }
+
+      this.data = response.data;
+      this.load = true;
+      this.loadPaginator = true;
+      this.paginate = response.meta;
+
     }, error => {
       this.load = true;
       this.loadPaginator = false;
@@ -62,7 +66,7 @@ export class Users {
 
   }
 
-  onFilterChange(filter: UsersRequest) {
+  onFilterChange(filter: UserFilterRequest) {
 
     this.filters = filter;
 
@@ -117,11 +121,11 @@ export class Users {
     switch (user.state.toString()) {
       case '1':
         color = 'green';
-        text = 'Activo';
+        text = 'ACTIVO';
         break;
       case '0':
         color = 'red';
-        text = 'Inactivo';
+        text = 'INACTIVO';
         break;
 
     }

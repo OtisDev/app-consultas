@@ -193,6 +193,10 @@ table .thead th {
   color: #FFDAB9;
 }
 
+.sidebar-wrapper .sidebar-menu ul li.active-page-link a i {
+  color: #FFDAB9 ;
+}
+
 .sidebar-wrapper .sidebar-menu ul li.active a i {
   color: #FFDAB9;
 }
@@ -240,4 +244,8 @@ table .thead th {
     width: 50% !important;
   }
 
+}
+
+.invalid-feedback{
+  display: block !important;
 }

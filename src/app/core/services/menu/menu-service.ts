@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
-import { filter } from 'rxjs';
+import { Router, Routes, RoutesRecognized } from '@angular/router';
+import { BehaviorSubject, filter, Observable } from 'rxjs';
 import { MenuItem } from '../../../models/menu-item.model';
 
 @Injectable({
@@ -9,51 +9,85 @@ import { MenuItem } from '../../../models/menu-item.model';
 
 export class MenuService {
 
-  private menuItems: MenuItem[] = [];
+  private menuItemsSubject = new BehaviorSubject<MenuItem[]>([]);
 
-  constructor(private router: Router) { }
+  public menuItems$ = this.menuItemsSubject.asObservable();
 
-  private routesRecognized(profile: string){
-    this.menuItems = [];
+  private currentProfile: string | null = null;
+
+  constructor(private router: Router) {
+    this.subscribeToRoutesRecognized();
+  }
+
+  private subscribeToRoutesRecognized(): void {
     this.router.events.pipe(
       filter(event => event instanceof RoutesRecognized)
     ).subscribe(() => {
-      this.menuItems = this.generateMenuItems(profile,this.router.config);
+      // Solo regenerar si ya tenemos un perfil definido
+      if (this.currentProfile) {
+        const newMenuItems = this.generateMenuItems(this.currentProfile, this.router.config);
+        this.menuItemsSubject.next(newMenuItems);
+      }
     });
   }
 
-  private generateMenuItems(profile: string,routes: any[], parentPath: string = '') {
-    let menuItems : MenuItem[] = [];
-    routes.forEach(route => {
+  public getMenuItems(profile: string): Observable<MenuItem[]> {
+    // Si el perfil cambia, actualizamos el perfil y disparamos la generación (sincrónico)
+    if (this.currentProfile !== profile) {
+      this.currentProfile = profile;
+
+      const newMenuItems = this.generateMenuItems(this.currentProfile, this.router.config);
+      this.menuItemsSubject.next(newMenuItems);
+    }
+
+    return this.menuItems$;
+  }
+
+  private generateMenuItems(profile: string, routes: Routes, parentPath: string = ''): MenuItem[] {
+    let menuItems: MenuItem[] = [];
+
+    const mainRouteConfig = routes.find(route =>
+      route.path === '' && route.children
+    );
+
+    if (!mainRouteConfig || !mainRouteConfig.children) {
+      console.error('No se encontró la configuración de ruta principal con children.');
+      return [];
+    }
+
+    const childrenRoutes = mainRouteConfig.children as Routes;
+
+    childrenRoutes.forEach((route: any) => {
+
       const path = parentPath + (route.path ? `/${route.path}` : '');
+
       if (route.data && route.data.name) {
 
-        const name : string = route.data.name;
-        let arr = menuItems.filter(m => m.name === name);
-        if(route.data.allow && arr.length == 0 && (route.data.allow.includes(profile) || route.data.allow.includes("all"))){
+        const isAllowed = route.data.allow && (route.data.allow.includes(profile) || route.data.allow.includes('all'));
 
-          route.data["showMenu"] = route.data.showMenu === false ? false : true;
+        if (isAllowed) {
 
-          if(route.data.showMenu){
-            let item : any = { name: route.data.name, path };
-            item["icon"] = route.data.icon ? route.data.icon : '';
-            item["children"] = route.children ? this.generateMenuItems(profile,route.children, path) : [];
+          const showMenu = route.data.showMenu !== false;
 
-            item["allow"] = route.allow ? route.allow : [];
-            this.menuItems.push(item);
+          if (showMenu) {
+            let item: MenuItem = { name: route.data.name, path, icon: '', children: [] };
+            item.icon = route.data.icon || '';
+
+            // Lógica recursiva para submenús
+            if (route.children) {
+              item.children = this.generateMenuItems(profile, route.children, path);
+            } else {
+              item.children = [];
+            }
+
             menuItems.push(item);
           }
-
         }
-
       }
     });
+
     return menuItems;
   }
 
-  getMenuItems(profile : string): any[] {
-    this.routesRecognized(profile);
-    return this.menuItems;
-  }
 
 }

@@ -47,9 +47,10 @@ export class Header {
   private loadMenuItems() {
     //this.menuItems = MENUITEMS_MOCKS;
     this.profile = this.userService.getProfileKey();
-    this.menuItems = this.menuService.getMenuItems(this.profile);
+    this.menuService.getMenuItems(this.profile).subscribe(items => {
+      this.menuItems = items;
+    })
 
-    console.log('Menu Items cargados en header', this.menuItems);
   }
 
   pressClick(hasChildren: boolean = false) {

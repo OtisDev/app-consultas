@@ -1,0 +1,32 @@
+<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+
+<div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+  <h5 class="modal-title">{{titleModal | uppercase}}</h5>
+  <button type="button" class="btn-close" aria-label="Close" [mat-dialog-close]="false"></button>
+</div>
+
+<mat-dialog-content>
+
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+
+      <div class="col-12">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('name')?.invalid && myForm.get('name')?.touched}">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Ingresa Nombre"
+          [required]="myForm.get('name')?.invalid && myForm.get('name')?.touched ? true : false" >
+        </div>
+      </div>
+
+      <button #btnSubmit type="submit" class="btn btn-primary" style="display: none;">Guardar</button>
+    </div>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions style="display: block;">
+    <div class="form-actions-footer">
+        <button class="btn btn-light" type="button" [mat-dialog-close]="false">Cancelar</button>
+        <button class="btn btn-success" type="button" (click)="clickSubmitButton(btnSubmit)">Guardar</button>
+    </div>
+</mat-dialog-actions>

@@ -34,16 +34,17 @@ export class ModalCreateUpdateUser {
     private dialogRef: MatDialogRef<ModalCreateUpdateUser>
   ) {
     this.action = data.action;
-    this.titleModal = data.action === 'create' ? 'Crear Usuario' : 'Actualizar Usuario';
+    this.titleModal = this.action === 'create' ? 'Crear Usuario' : 'Actualizar Usuario';
+
     this.myForm = this.fb.group({
-      name: [this.action === 'create' ? '' : data.user?.name, [Validators.required]],
-      email: [this.action === 'create' ? '' : data.user?.email, [Validators.required]],
-      role: [this.action === 'create' ? '' : data.user?.role, [Validators.required]],
-      username: [this.action === 'create' ? '' : data.user?.username, [Validators.required]],
+      name: [this.action === 'create' ? '' : data.user!.name, [Validators.required]],
+      //email: [this.action === 'create' ? '' : data.user!.email, [Validators.required]],
+      role: [this.action === 'create' ? '' : data.user!.role, [Validators.required]],
+      username: [this.action === 'create' ? '' : data.user!.username, [Validators.required]],
       password: ['', this.action === 'create' ? [Validators.required] : []]
     });
 
-    this.roles = ROLES_MOCKS;
+    this.roles = this.userService.getRoles();
     this.roles.unshift({key: '', name: '-SELECCIONAR-'});
   }
 
@@ -54,11 +55,7 @@ export class ModalCreateUpdateUser {
 
   async onSubmit() {
 
-    console.log(this.myForm.get('DNI')?.invalid && this.myForm.get('DNI')?.touched, 'touched', this.myForm.get('DNI')?.touched, 'invalid', this.myForm.get('DNI')?.invalid);
-
     markAllControlsAsTouched(this.myForm);
-
-    //return;
 
     if (this.myForm.valid) {
       const text = this.action === 'create' ? 'Se creará un nuevo usuario.' : 'Se actualizará el usuario existente.';
@@ -117,7 +114,8 @@ export class ModalCreateUpdateUser {
 
   private updateUser() {
     this.isLoading = true;
-    this.userService.updateUser(this.myForm.value).subscribe(response => {
+    const id : number = this.data.user!.id;
+    this.userService.updateUser(this.myForm.value, id).subscribe(response => {
 
       this.isLoading = false;
       if (!response.success) {

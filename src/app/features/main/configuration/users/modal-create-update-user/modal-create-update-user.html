@@ -16,29 +16,24 @@
         <div class="mb-3" [ngClass]="{'was-validated': myForm.get('name')?.invalid && myForm.get('name')?.touched}">
           <label class="form-label">Nombres y Apellidos</label>
           <input type="text" class="form-control" formControlName="name" placeholder="Ingresa Nombre"
-          [required]="myForm.get('name')?.invalid && myForm.get('name')?.touched ? true : false" appUppercase
-          >
+          [required]="myForm.get('name')?.invalid && myForm.get('name')?.touched ? true : false" >
         </div>
       </div>
-      <div class="col-md-6 col-sm-12">
+      <!-- <div class="col-md-6 col-sm-12">
         <div class="mb-3" [ngClass]="{'was-validated': myForm.get('email')?.invalid && myForm.get('email')?.touched}">
-          <label class="form-label">Email</label>
-          <input type="text" class="form-control" formControlName="email" placeholder="Ingresa Email"
+          <label class="form-label">Correo electronico</label>
+          <input type="text" class="form-control" formControlName="email" placeholder="Ingresa Correo electronico"
           [required]="myForm.get('email')?.invalid && myForm.get('email')?.touched ? true : false" appUppercase
           >
         </div>
-      </div>
+      </div> -->
       <div class="col-12">
         <div class="form-section-title">Datos de Acceso</div>
       </div>
       <div class="col-md-6 col-12">
         <div class="mb-3" [ngClass]="{'was-validated': myForm.get('role')?.invalid && myForm.get('role')?.touched}">
           <label class="form-label">Perfil</label>
-          <input type="text" class="form-control" formControlName="login" placeholder="Ingresa usuario"
-          appUppercase
-          [required]="myForm.get('login')?.invalid && myForm.get('login')?.touched ? true : false"
-          >
-          <select class="form-select mt-2" formControlName="role"
+          <select class="form-select" formControlName="role"
           [required]="myForm.get('role')?.invalid && myForm.get('role')?.touched ? true : false">
             <option *ngFor="let role of roles" [value]="role.key">{{role.name}}</option>
           </select>
@@ -46,19 +41,18 @@
       </div>
       <div class="col-12"></div>
       <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('login')?.invalid && myForm.get('login')?.touched}">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('username')?.invalid && myForm.get('username')?.touched}">
           <label class="form-label">Usuario</label>
-          <input type="text" class="form-control" formControlName="login" placeholder="Ingresa usuario"
-          appUppercase
-          [required]="myForm.get('login')?.invalid && myForm.get('login')?.touched ? true : false"
+          <input type="text" class="form-control" formControlName="username" placeholder="Ingresa usuario"
+          [required]="myForm.get('username')?.invalid && myForm.get('username')?.touched ? true : false"
           >
         </div>
       </div>
       <div class="col-md-6 col-sm-12">
-        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('clave')?.invalid && myForm.get('clave')?.touched}">
+        <div class="mb-3" [ngClass]="{'was-validated': myForm.get('password')?.invalid && myForm.get('password')?.touched}">
           <label class="form-label">Contraseña</label>
-          <input type="password" class="form-control" formControlName="clave" placeholder="********"
-          [required]="myForm.get('clave')?.invalid && myForm.get('clave')?.touched ? true : false"
+          <input type="password" class="form-control" formControlName="password" placeholder="********"
+          [required]="myForm.get('password')?.invalid && myForm.get('password')?.touched ? true : false"
           >
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { UsersRequest } from '../../../../../models/user.model';
+import { UserFilterRequest } from '../../../../../models/user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedModule } from '../../../../../shared/shared-module';
 
@@ -10,16 +10,13 @@ import { SharedModule } from '../../../../../shared/shared-module';
   styleUrl: './filtro-user.css'
 })
 export class FiltroUser {
-  @Output() filterChange = new EventEmitter<UsersRequest>();
+  @Output() filterChange = new EventEmitter<UserFilterRequest>();
   myForm: FormGroup;
 
   constructor(private fb: FormBuilder){
     this.myForm = this.fb.group({
-      dni: [''],
-      apepaterno: [''],
-      apematerno: [''],
-      nombres: [''],
-      nivel: [''],
+      name: [''],
+      username: [''],
       state : ['']
     });
   }
@@ -39,6 +36,9 @@ export class FiltroUser {
 
   resetForm(){
     this.myForm.reset();
+    this.myForm.patchValue({
+      state: ''
+    });
     this.onApplyFilter();
   }
 }

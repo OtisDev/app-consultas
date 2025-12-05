@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UsersRequest, UsersResponse, User, UserPermisionsRequest, UserPermissionsResponse, UserOfficeProfile, UserCreateUpdateRequest, UserAssignOfficeProfileRequest, UserOfficeProfileResponse } from '../../../models/user.model';
+import { UsersResponse, UserCreateUpdateRequest,UserFilterRequest } from '../../../models/user.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { API_ROUTES } from '../../../config/api-routes';
@@ -15,8 +15,13 @@ export class UserService {
 
   private roles : Role[] = [];
 
+
   constructor(private http: HttpClient){
     this.roles = ROLES_MOCKS;
+  }
+
+  getRoles(): Role[] {
+    return this.roles;
   }
 
   setProfileSession(profileSession: string){
@@ -46,8 +51,7 @@ export class UserService {
     return profilesAuthorized.includes(this.getProfileKey());
   }
 
-  getUsers(request: UsersRequest) : Observable<UsersResponse>{
-    request.state = request.state?.toString() == '0' ? '-1' : request.state;
+  getUsers(request: UserFilterRequest) : Observable<UsersResponse>{
     const params = toHttpParams(request);
     return this.http.get<UsersResponse>(API_ROUTES.USER.GET_ALL, {params});
   }
@@ -56,15 +60,16 @@ export class UserService {
     return this.http.post<ResponseWithoutData>(API_ROUTES.USER.CREATE, request);
   }
 
-  updateUser(request : UserCreateUpdateRequest) : Observable<ResponseWithoutData>{
-    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE, request);
+  updateUser(request : UserCreateUpdateRequest, id: number) : Observable<ResponseWithoutData>{
+    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE(id), request);
   }
 
   updateStateUser(id: number, state: number) : Observable<ResponseWithoutData>{
-    const body = {
-      state:state.toString()
-    };
-    return this.http.put<ResponseWithoutData>(API_ROUTES.USER.UPDATE_STATE(id), body);
+    return this.http.patch<ResponseWithoutData>(API_ROUTES.USER.UPDATE_STATE(id),{});
+  }
+
+  deleteUser(id: number) : Observable<ResponseWithoutData>{
+    return this.http.delete<ResponseWithoutData>(API_ROUTES.USER.DELETE(id));
   }
 
 }

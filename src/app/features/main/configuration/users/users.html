@@ -18,8 +18,8 @@
             <th width="5%">N°</th>
             <th width="30%">Nombres Y Apellidos</th>
             <th width="15%">Usuario</th>
-            <th width="20%">Situacion</th>
             <th width="20%">Perfil</th>
+            <th width="20%">Situacion</th>
             <th width="10%"></th>
           </tr>
         </thead>
@@ -38,13 +38,13 @@
             <td class="text-center">
               {{$index+1}}
             </td>
-            <td class="text-center">{{item.name}}</td>
-            <td class="text-center">{{item.username}}</td>
+            <td class="text-center">{{item.name | uppercase}}</td>
+            <td class="text-center">{{item.username | uppercase}}</td>
             <td class="text-center">
-              <span [innerHTML]="estado(item)"></span>
+              {{profilesAssigned(item) | uppercase}}
             </td>
             <td class="text-center">
-              {{profilesAssigned(item)}}
+              <span [innerHTML]="estado(item)"></span>
             </td>
             <td class="text-center">
               <div class="btn-group">

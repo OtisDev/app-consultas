@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth-service';
 import { catchError, switchMap, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
+import { SKIP_AUTH_HEADER } from '../../config/http-context-keys';
 
 function addHeaderAuthorization(token: string | null) {
   const headersConfig: { [key: string]: string } = {
@@ -17,6 +18,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const authService = inject(AuthService);
   const token = authService.getToken();
+  const skipAuth = req.context.get(SKIP_AUTH_HEADER);
+
+  if (skipAuth) {
+    return next(req);
+  }
 
   let headersConfig: config = addHeaderAuthorization(token);
 

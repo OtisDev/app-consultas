@@ -1,11 +1,2 @@
-<div class="row">
-  <div class="col-12 text-center">
-    <div class="m-auto">
-      <img src="assets/images/LOGO_reporte.png" alt="MDNCH Dashboards" class="img-fluid" style="max-height: 150px;" />
-    </div>
-    <h2 class="card-title my-5">
-      "Año de la recuperación y consolidación de la economía peruana."
-    </h2>
-    <div class="card-title text-primary mb-3">OFICINA DE TECNOLOGIAS DE INFORMACION Y SISTEMAS</div>
-  </div>
-</div>
+<app-home-standard *ngIf="!isAdmin"></app-home-standard>
+<app-home-admin *ngIf="isAdmin"></app-home-admin>

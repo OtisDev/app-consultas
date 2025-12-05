@@ -1,6 +1,9 @@
+import { DniFilterRequest } from "./dni.model";
+import { RucFilterRequest } from "./ruc.model";
+
 export interface Paginated {
-  page: number;
-  per_page: number;
+  page?: number;
+  per_page?: number;
 }
 
 export type Paginate = {

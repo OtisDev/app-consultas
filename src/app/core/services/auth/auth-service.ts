@@ -33,6 +33,7 @@ export class AuthService {
     if (user) {
       this.user = user;
       this.token = this.getToken();
+      this.rolesKeys = [this.user.role];
     }
 
   }
@@ -56,7 +57,6 @@ export class AuthService {
 
   saveLocalStorage(userData: UserSession) {
     sessionStorage.setItem('user', JSON.stringify(userData.user));
-    this.rolesKeys = [userData.user.role];
     this.saveToken(userData.access_token);
     this.init();
   }
@@ -132,9 +132,8 @@ export class AuthService {
   }
 
   logout(redirect: boolean = true){
-    localStorage.clear();
-    sessionStorage.clear();
-    this.user = {} as UserR;
+    this.clearStorage();
+    this.user = {} as User;
     this.token = null;
     this.modules = [];
     this.permissions = [];
@@ -146,13 +145,18 @@ export class AuthService {
       });
 
       confirm.then((result) => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
       });
     }
   }
 
   hasAnyRole(roles: string[]): boolean {
     return roles.some(role => this.rolesKeys.includes(role));
+  }
+
+  clearStorage(){
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
 }

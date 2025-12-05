@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-4 col-12 mb-3">
+    <app-filtro-dni (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-dni>
+    <app-loader *ngIf="loading"></app-loader>
+    <div *ngIf="!loading && load && !data.nombre_completo" class="text-center alert alert-warning ">
+      No se encontraron resultados
+    </div>
+  </div>
+  <div class="col-md-6 col-12 mb-3">
+    <div class="card border-primary">
+      <div class="card-header">
+        <div class="card-title text-primary">Resultados</div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+              <label class="form-label"><strong>Apellido Paterno:</strong></label>
+              <input type="text" class="form-control" name="apellido_paterno" [(ngModel)]="data.apellido_paterno" disabled>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+              <label class="form-label"><strong>Apellido Materno:</strong></label>
+              <input type="text" class="form-control" name="apellido_materno" [(ngModel)]="data.apellido_materno" disabled>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+              <label class="form-label"><strong>Nombres:</strong></label>
+              <input type="text" class="form-control" name="nombres" [(ngModel)]="data.nombres" disabled>
+            </div>
+            <div class="col-12"></div>
+            <div class="col-lg-8 col-12 mb-3">
+              <label class="form-label"><strong>Nombre Completo:</strong></label>
+              <input type="text" class="form-control" name="nombre_completo" [(ngModel)]="data.nombre_completo" disabled>
+            </div>
+            <div class="col-lg-4 col-12 mb-3">
+              <label class="form-label"><strong>Código de Verificación:</strong></label>
+              <input type="text" class="form-control" name="codigo_verificacion" [(ngModel)]="data.codigo_verificacion" disabled>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

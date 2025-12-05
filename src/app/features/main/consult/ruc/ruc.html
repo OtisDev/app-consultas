@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-4 col-12 mb-3">
+    <app-filtro-ruc (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-ruc>
+    <app-loader *ngIf="loading"></app-loader>
+    <div *ngIf="!loading && load && !data.ruc" class="text-center alert alert-warning ">
+      No se encontraron resultados
+    </div>
+  </div>
+  <div class="col-md-6 col-12 mb-3">
+    <div class="card border-primary">
+      <div class="card-header">
+        <div class="card-title text-primary">Resultados</div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-lg-4 col-12 mb-3">
+              <label class="form-label"><strong>N° RUC:</strong></label>
+              <input type="text" class="form-control" name="ruc" [(ngModel)]="data.ruc" disabled>
+            </div>
+            <div class="col-lg-8 col-12 mb-3">
+              <label class="form-label"><strong>Razon Social:</strong></label>
+              <input type="text" class="form-control" name="razon_social" [(ngModel)]="data.nombre_o_razon_social" disabled>
+            </div>
+            <div class="col-12 mb-3">
+              <label class="form-label"><strong>Dirección:</strong></label>
+              <input type="text" class="form-control" name="direccion" [(ngModel)]="data.direccion_completa" disabled>
+            </div>
+            <div class="col-lg-8 col-12 mb-3">
+              <label class="form-label"><strong>Estado:</strong></label>
+              <input type="text" class="form-control" name="estado" [(ngModel)]="data.estado" disabled>
+            </div>
+            <div class="col-lg-4 col-12 mb-3">
+              <label class="form-label"><strong>Condición:</strong></label>
+              <input type="text" class="form-control" name="condicion" [(ngModel)]="data.condicion" disabled>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
