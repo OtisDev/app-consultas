@@ -23,9 +23,14 @@
         </div>
       </div>
       <div class="card-body">
-        <ngx-charts-area-chart [results]="single" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
+        @if(diaryReport.length === 0){
+          <div class="alert alert-warning text-center">No hay datos disponibles para el mes seleccionado.</div>
+        }@else{
+          <ngx-charts-area-chart [results]="diaryReport" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
           [xAxisLabel]="'Días del Mes'">
-        </ngx-charts-area-chart>
+          </ngx-charts-area-chart>
+        }
+
       </div>
     </div>
   </div>
@@ -36,9 +41,14 @@
         <strong>Historial mensual de consultas</strong>
       </div>
       <div class="card-body">
-        <ngx-charts-area-chart [results]="single" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
-          [xAxisLabel]="'Días del Mes'">
-        </ngx-charts-area-chart>
+        @if(montlyReport.length === 0) {
+          <div class="alert alert-warning text-center">No hay datos disponibles para el mes seleccionado.</div>
+        }@else {
+          <ngx-charts-area-chart [results]="montlyReport" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
+            [xAxisLabel]="'Días del Mes'">
+          </ngx-charts-area-chart>
+        }
+
       </div>
     </div>
   </div>

@@ -13,7 +13,7 @@ export interface EndpointClient {
 
 export interface EndpointClientFilterRequest {
   year?: number;
-  month?: string;
+  month?: number;
   client_id?: number;
   endpoint_id?: number;
   endpoint_name?: string;

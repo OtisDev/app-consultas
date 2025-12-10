@@ -7,7 +7,7 @@
     <div class="col-md-4 col-12">
       <div class="mb-3">
         <label class="form-label">Año</label>
-        <select class="form-control" formControlName="year">
+        <select class="form-control" formControlName="year" (change)="onApplyFilter()">
           <option *ngFor="let item of yearList" [value]="item">{{ item }}</option>
         </select>
       </div>
@@ -16,7 +16,7 @@
     <div class="col-md-4 col-12">
       <div class="mb-3">
         <label class="form-label">Cliente</label>
-        <select class="form-control" formControlName="client_id">
+        <select class="form-control" formControlName="client_id" (change)="onApplyFilter()">
           <option value="">-Todos-</option>
           <option *ngFor="let item of clientList" [value]="item.id">{{ item.name | uppercase}}</option>
         </select>
@@ -25,7 +25,7 @@
     <div class="col-md-4 col-12">
       <div class="mb-3">
         <label class="form-label">Consulta</label>
-        <select class="form-control" formControlName="endpoint_id">
+        <select class="form-control" formControlName="endpoint_id" (change)="onApplyFilter()">
           <option *ngIf="endpointList.length === 0" value="0">-Seleccionar-</option>
           <option *ngFor="let item of endpointList" [value]="item.id">{{ item.name | uppercase}}</option>
         </select>

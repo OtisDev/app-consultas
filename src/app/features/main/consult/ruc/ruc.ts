@@ -15,6 +15,7 @@ export class Ruc {
   loading : boolean = false;
   load : boolean = false;
   filter! : RucFilterRequest;
+  message : string = '';
 
   data: RucData = {} as RucData;
 
@@ -53,6 +54,7 @@ export class Ruc {
 
         this.load = true;
         if(!response.success){
+          this.message = response.message;
           return;
         }
 

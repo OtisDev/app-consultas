@@ -6,6 +6,16 @@ import { SharedModule } from '../../../../shared/shared-module';
 import { FiltroAdmin } from './filtro-admin/filtro-admin';
 import {  DailyReport, EndpointClientFilterRequest, MontlyReport } from '../../../../models/endpoint_client.model';
 import { EndpointService } from '../../../../core/services/endpoint/endpoint-service';
+import { Data } from '@angular/router';
+
+interface Serie {
+  name: string;
+  value: number;
+}
+interface DataReport {
+  name: string;
+  series: Serie[];
+}
 
 @Component({
   selector: 'app-home-admin',
@@ -20,22 +30,25 @@ export class HomeAdmin {
   montlyData : MontlyReport[] = [];
   message : string[] = [];
 
-  monthList: { value: string, name: string }[] = [
-    { value: '01', name: 'Enero' },
-    { value: '02', name: 'Febrero' },
-    { value: '03', name: 'Marzo' },
-    { value: '04', name: 'Abril' },
-    { value: '05', name: 'Mayo' },
-    { value: '06', name: 'Junio' },
-    { value: '07', name: 'Julio' },
-    { value: '08', name: 'Agosto' },
-    { value: '09', name: 'Septiembre' },
-    { value: '10', name: 'Octubre' },
-    { value: '11', name: 'Noviembre' },
-    { value: '12', name: 'Diciembre' },
+  monthList: { value: number, name: string }[] = [
+    { value: 1, name: 'Enero' },
+    { value: 2, name: 'Febrero' },
+    { value: 3, name: 'Marzo' },
+    { value: 4, name: 'Abril' },
+    { value: 5, name: 'Mayo' },
+    { value: 6, name: 'Junio' },
+    { value: 7, name: 'Julio' },
+    { value: 8, name: 'Agosto' },
+    { value: 9, name: 'Septiembre' },
+    { value: 10, name: 'Octubre' },
+    { value: 11, name: 'Noviembre' },
+    { value: 12, name: 'Diciembre' },
   ];
 
-  currentMonth: string = new Date().toISOString().slice(5, 7);
+  currentMonth: number = new Date().getMonth() + 1;
+  diaryReport : DataReport[] = [];
+  montlyReport : DataReport[] = [];
+  // Example data for single chart
 
   single: any[] = [
     {
@@ -74,8 +87,6 @@ export class HomeAdmin {
   onFilterChange(filters: EndpointClientFilterRequest) {
     this.filters = filters;
     this.filters.month = this.currentMonth;
-    //this.filters.endpoint_name = this.filters.endpoint_name ?? '';
-    //console.log(this.filters);
     this.loadData();
   }
 
@@ -94,6 +105,7 @@ export class HomeAdmin {
         if(this.montlyData.length === 0 && !response.success){
           this.message.push(response.message);
         }
+        this.montlyReport = this.buildSeries(this.montlyData, 'Mensual', 'monthly');
         this.isLoading = false;
       },error: (error) => {
         console.error(error);
@@ -111,6 +123,7 @@ export class HomeAdmin {
         if(this.diaryData.length === 0 && !response.success){
           this.message.push(response.message);
         }
+        this.diaryReport = this.buildSeries(this.diaryData, 'Dia', 'daily');
         this.isLoading = false;
       },error: (error) => {
         console.error(error);
@@ -122,6 +135,38 @@ export class HomeAdmin {
   onClickMonthChange(){
     this.filters.month = this.currentMonth;
     this.loadData();
+  }
+
+  buildSeries( data : any[], name : string, type : string = 'daily' ) : DataReport[] {
+    const last = type === 'daily' ? this.obtenerUltimoDiaDelMes(this.filters.year!, this.currentMonth - 1) : 12;
+    let series: Serie[] = [];
+
+    for(let val = 1; val <= last; val++){
+      const dataItem = data.find( item => {
+        if(type === 'daily'){
+          return item.day_ === val.toString();
+        } else {
+          return item.month_ === val.toString();
+        }
+      });
+
+      series.push({
+        name: type == 'daily' ? val.toString() : this.monthName(val.toString()),
+        value: dataItem ? dataItem.total : 0
+      });
+    }
+
+    return [{ name, series }];
+  }
+
+  private monthName(number : string): string {
+    const monthNumber = parseInt(number, 10);
+    const month = this.monthList.find(m => m.value === monthNumber);
+    return month ? month.name : '';
+  }
+
+  private obtenerUltimoDiaDelMes(año: number, mes: number): number {
+    return new Date(año, mes + 1, 0).getDate();
   }
 
 }
