@@ -5,6 +5,10 @@
     <div *ngIf="!loading && load && !data.ruc" class="text-center alert alert-warning ">
       {{message}}
     </div>
+
+    <div *ngIf="!loading && load && data.ruc" class="text-center alert alert-success ">
+      Datos encontrados correctamente.
+    </div>
   </div>
   <div class="col-md-6 col-12 mb-3">
     <div class="card border-primary">
