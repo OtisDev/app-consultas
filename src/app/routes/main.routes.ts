@@ -51,6 +51,16 @@ export const mainRoutes: Routes = [
       allow :['all']
     }
   },
+  {
+    path: 'consulta-nombre',
+    loadComponent: () =>
+      import('../features/main/consult/nombre/nombre').then(m => m.Nombre),
+    data:{
+      name:"Consulta por nombre",
+      icon: 'si-pencil',
+      allow :['all']
+    }
+  },
   /*
   {
     path: 'denied-access',

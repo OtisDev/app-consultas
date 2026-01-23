@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-12 col-md-4">
+    <div class="card border-primary">
+      <div class="card-header">
+        <div class="card-title text-primary">Ingresa nombre o Razón social</div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="formSearch" (ngSubmit)="onSubmitSearch($event)">
+          <div class="mb-3 has-validation">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                placeholder="Pedro Martinez / Empresa SAC"
+                appUppercase
+                [ngClass]="{ 'is-invalid': formSearch.get('nombre')?.invalid && formSearch.get('nombre')?.touched }"
+                (keypress)="handleKeyPress($event)"
+              />
+              <button type="submit" class="btn btn-primary" [disabled]="searching">
+                <span class="icon">
+                  <i class="bi bi-search"></i>
+                </span>
+                Consultar
+              </button>
+              <div class="invalid-feedback" *ngIf="formSearch.get('dni')?.invalid && formSearch.get('dni')?.touched">{{ formSearch.get('dni')?.errors | json }}</div>
+            </div>
+          </div>
+        </form>
+        <div class="position-relative" style="overflow-y: auto; max-height: 450px;" *ngIf="searchPerformed">
+          <app-abs-loader *ngIf="searching"></app-abs-loader>
+          <ul class="list-group">
+            <li *ngIf="results.length == 0" class="list-group-item">
+              <div class="text-center">No se encontraron resultados</div>
+            </li>
+            <li
+              class="list-group-item" *ngFor="let result of results; let i = index"
+              (click)="onSelectResult(i, result, $event)"
+              style="cursor: pointer;"
+              [ngClass]="{ 'list-group-item__active': selectedIndex === i }"
+            >
+              <div class="d-flex flex-column">
+                  <span>{{ result.nombre }}</span>
+                  <small class="text-muted text-uppercase">{{ result.type_record }}: {{ result.documento }}</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-8">
+    <div class="card border-primary">
+      <div class="card-header">
+        <div class="card-title text-primary">Resultados</div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <div class="form-group mb-3">
+              <label for="nroDoc" class="form-label text-uppercase">N° {{ selectedType }}</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="si-italic"></i>
+                </span>
+                <input [value]="selectedType == 'dni' ? detail?.numero : detail?.ruc" type="text" class="form-control" id="nroDoc" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="form-group mb-3">
+              <label for="nombreRazonSocial" class="form-label text-uppercase">{{ selectedType == 'dni' ? 'Nombre' : 'Razón Social' }}</label>
+              <input [value]="selectedType == 'dni' ? detail?.nombre_completo : detail?.nombre_o_razon_social" type="text" class="form-control" id="nombreRazonSocial" readonly>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group mb-3">
+              <label for="direccion" class="form-label text-uppercase">Dirección</label>
+              <input [value]="detail?.direccion ?? ''" type="text" class="form-control" id="direccion" readonly>
+            </div>
+          </div>
+          <div class="col-12 col-md-4" *ngIf="detail?.codigo_verificacion">
+            <div class="form-group mb-3">
+              <label for="codigoVerificacion" class="form-label text-uppercase">Cód. Verificación</label>
+              <input [value]="detail?.codigo_verificacion" type="text" class="form-control" id="codigoVerificacion" readonly>
+            </div>
+          </div>
+          <div class="col-12 col-md-4" *ngIf="detail?.estado">
+            <div class="form-group mb-3">
+              <label for="estado" class="form-label text-uppercase">Estado</label>
+              <input [value]="detail?.estado" type="text" class="form-control" id="estado" readonly>
+            </div>
+          </div>
+          <div class="col-12 col-md-4" *ngIf="detail?.condicion">
+            <div class="form-group mb-3">
+              <label for="condicion" class="form-label text-uppercase">Condición</label>
+              <input [value]="detail?.condicion" type="text" class="form-control" id="condicion" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

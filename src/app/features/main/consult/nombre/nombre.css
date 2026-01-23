@@ -1,0 +1,9 @@
+.list-group-item__active {
+  background-color: #2B4E86;
+  border-color: #2B4E86;
+  color: #fff;
+}
+
+.list-group-item__active .text-muted {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
