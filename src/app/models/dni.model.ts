@@ -7,6 +7,11 @@ export interface Dni {
   apellido_paterno: string;
   apellido_materno: string;
   codigo_verificacion: number;
+  direccion?: string | null;
+  departamento?: string | null;
+  provincia?: string | null;
+  distrito?: string | null;
+  photo_url?: string;
 }
 
 export type DniData = Dni;

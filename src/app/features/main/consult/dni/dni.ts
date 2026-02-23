@@ -24,7 +24,8 @@ export class Dni {
     apellido_paterno: '',
     apellido_materno: '',
     nombre_completo: '',
-    codigo_verificacion: 0
+    codigo_verificacion: 0,
+    photo_url: 'https://placehold.co/150x200?text=00000000',
   }
 
 
@@ -53,7 +54,9 @@ export class Dni {
         }
 
         this.data = response.data;
-
+        if(this.data.photo_url == '' || this.data.photo_url == null || this.data.photo_url == undefined){
+          this.data.photo_url = `https://placehold.co/150x200?text=${this.data.numero}`;
+        }
       },
       error: (error) => {
         console.error('Error fetching DNI data:', error);
