@@ -56,45 +56,52 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-12 col-md-4">
-            <div class="form-group mb-3">
-              <label for="nroDoc" class="form-label text-uppercase">N° {{ selectedType }}</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="si-italic"></i>
-                </span>
-                <input [value]="selectedType == 'dni' ? detail?.numero : detail?.ruc" type="text" class="form-control" id="nroDoc" readonly>
+          <div *ngIf="selectedType == 'dni' && detail" class="col-2 text-center pb-3">
+            <img src="{{ `https://backend-consultas.muninuevochimbote.gob.pe/api/photos/${detail?.numero}` }}" alt="" style="height: auto; width: 100%; background-color: #d3d3d3;">
+          </div>
+          <div [ngClass]="{ 'col-10': selectedType == 'dni', 'col-12': selectedType !== 'dni' }">
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <div class="form-group mb-3">
+                  <label for="nroDoc" class="form-label text-uppercase">N° {{ selectedType }}</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="si-italic"></i>
+                    </span>
+                    <input [value]="selectedType == 'dni' ? detail?.numero : detail?.ruc" type="text" class="form-control" id="nroDoc" readonly>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-8">
-            <div class="form-group mb-3">
-              <label for="nombreRazonSocial" class="form-label text-uppercase">{{ selectedType == 'dni' ? 'Nombre' : 'Razón Social' }}</label>
-              <input [value]="selectedType == 'dni' ? detail?.nombre_completo : detail?.nombre_o_razon_social" type="text" class="form-control" id="nombreRazonSocial" readonly>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group mb-3">
-              <label for="direccion" class="form-label text-uppercase">Dirección</label>
-              <input [value]="detail?.direccion ?? ''" type="text" class="form-control" id="direccion" readonly>
-            </div>
-          </div>
-          <div class="col-12 col-md-4" *ngIf="detail?.codigo_verificacion">
-            <div class="form-group mb-3">
-              <label for="codigoVerificacion" class="form-label text-uppercase">Cód. Verificación</label>
-              <input [value]="detail?.codigo_verificacion" type="text" class="form-control" id="codigoVerificacion" readonly>
-            </div>
-          </div>
-          <div class="col-12 col-md-4" *ngIf="detail?.estado">
-            <div class="form-group mb-3">
-              <label for="estado" class="form-label text-uppercase">Estado</label>
-              <input [value]="detail?.estado" type="text" class="form-control" id="estado" readonly>
-            </div>
-          </div>
-          <div class="col-12 col-md-4" *ngIf="detail?.condicion">
-            <div class="form-group mb-3">
-              <label for="condicion" class="form-label text-uppercase">Condición</label>
-              <input [value]="detail?.condicion" type="text" class="form-control" id="condicion" readonly>
+              <div class="col-12 col-md-8">
+                <div class="form-group mb-3">
+                  <label for="nombreRazonSocial" class="form-label text-uppercase">{{ selectedType == 'dni' ? 'Nombre' : 'Razón Social' }}</label>
+                  <input [value]="selectedType == 'dni' ? detail?.nombre_completo : detail?.nombre_o_razon_social" type="text" class="form-control" id="nombreRazonSocial" readonly>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group mb-3">
+                  <label for="direccion" class="form-label text-uppercase">Dirección</label>
+                  <input [value]="detail?.direccion ?? ''" type="text" class="form-control" id="direccion" readonly>
+                </div>
+              </div>
+              <div class="col-12 col-md-4" *ngIf="detail?.codigo_verificacion">
+                <div class="form-group mb-3">
+                  <label for="codigoVerificacion" class="form-label text-uppercase">Cód. Verificación</label>
+                  <input [value]="detail?.codigo_verificacion" type="text" class="form-control" id="codigoVerificacion" readonly>
+                </div>
+              </div>
+              <div class="col-12 col-md-4" *ngIf="detail?.estado">
+                <div class="form-group mb-3">
+                  <label for="estado" class="form-label text-uppercase">Estado</label>
+                  <input [value]="detail?.estado" type="text" class="form-control" id="estado" readonly>
+                </div>
+              </div>
+              <div class="col-12 col-md-4" *ngIf="detail?.condicion">
+                <div class="form-group mb-3">
+                  <label for="condicion" class="form-label text-uppercase">Condición</label>
+                  <input [value]="detail?.condicion" type="text" class="form-control" id="condicion" readonly>
+                </div>
+              </div>
             </div>
           </div>
         </div>
