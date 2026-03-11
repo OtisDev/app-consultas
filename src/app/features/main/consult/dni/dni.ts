@@ -67,6 +67,7 @@ export class Dni {
   }
 
   onFilterChange(filter: DniFilterRequest) {
+    this.data.photo_url = `https://placehold.co/150x200?text=${filter.dni}`;
     this.filter = filter;
     this.loadData();
   }

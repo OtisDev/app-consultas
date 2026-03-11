@@ -1,106 +1,92 @@
-<div class="row">
-  <div class="col-12 col-md-4">
-    <div class="card border-primary">
-      <div class="card-header">
-        <div class="card-title text-primary">Ingresa nombre o Razón social</div>
-      </div>
-      <div class="card-body">
-        <form [formGroup]="formSearch" (ngSubmit)="onSubmitSearch($event)">
-          <div class="mb-3 has-validation">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="nombre"
-                placeholder="Pedro Martinez / Empresa SAC"
-                appUppercase
-                [ngClass]="{ 'is-invalid': formSearch.get('nombre')?.invalid && formSearch.get('nombre')?.touched }"
-                (keypress)="handleKeyPress($event)"
-              />
-              <button type="submit" class="btn btn-primary" [disabled]="searching">
-                <span class="icon">
-                  <i class="bi bi-search"></i>
-                </span>
-                Consultar
-              </button>
-              <div class="invalid-feedback" *ngIf="formSearch.get('dni')?.invalid && formSearch.get('dni')?.touched">{{ formSearch.get('dni')?.errors | json }}</div>
-            </div>
+<div class="grid md:grid-cols-4 gap-4">
+  <div>
+    <div class="card flex flex-col gap-4">
+      <form [formGroup]="formSearch" (ngSubmit)="onSubmitSearch($event)">
+        <div class="field" [ngClass]="{ 'has-error': formSearch.get('nombre')?.invalid && formSearch.get('nombre')?.touched }">
+          <label for="nombre">Nombre / Razón Social</label>
+          <div class="input-control input-control__group">
+            <input
+              type="text"
+              class="w-full"
+              name="nombre"
+              formControlName="nombre"
+              placeholder="Pedro Martinez / Empresa SAC"
+              appUppercase
+              (keypress)="handleKeyPress($event)"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-primary btn-md" [disabled]="searching">
+              <span class="icon">
+                <i class="bi bi-search"></i>
+              </span>
+              Consultar
+            </button>
           </div>
-        </form>
-        <div class="position-relative" style="overflow-y: auto; max-height: 450px;" *ngIf="searchPerformed">
-          <app-abs-loader *ngIf="searching"></app-abs-loader>
-          <ul class="list-group">
-            <li *ngIf="results.length == 0" class="list-group-item">
-              <div class="text-center">No se encontraron resultados</div>
-            </li>
-            <li
-              class="list-group-item" *ngFor="let result of results; let i = index"
-              (click)="onSelectResult(i, result, $event)"
-              style="cursor: pointer;"
-              [ngClass]="{ 'list-group-item__active': selectedIndex === i }"
-            >
-              <div class="d-flex flex-column">
-                  <span>{{ result.nombre }}</span>
-                  <small class="text-muted text-uppercase">{{ result.type_record }}: {{ result.documento }}</small>
-              </div>
-            </li>
-          </ul>
+          <div class="msg-error" *ngIf="formSearch.get('dni')?.invalid && formSearch.get('dni')?.touched">{{ formSearch.get('dni')?.errors | json }}</div>
         </div>
+      </form>
+
+      <div class="relative overflow-y-auto" style="max-height: 450px;" *ngIf="searchPerformed">
+        <app-abs-loader *ngIf="searching"></app-abs-loader>
+        <ul class="flex flex-col gap-2">
+          <li *ngIf="results.length == 0" class="p-2">
+            <div class="text-center">No se encontraron resultados</div>
+          </li>
+          <li
+            class="flex flex-col p-2" *ngFor="let result of results; let i = index"
+            (click)="onSelectResult(i, result, $event)"
+            style="cursor: pointer;"
+            [ngClass]="{ 'list-group-item__active': selectedIndex === i }"
+          >
+            <span>{{ result.nombre }}</span>
+            <small class="text-muted uppercase">{{ result.type_record }}: {{ result.documento }}</small>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-8">
+  <div class="md:col-span-3">
     <div class="card border-primary">
       <div class="card-header">
         <div class="card-title text-primary">Resultados</div>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div *ngIf="selectedType == 'dni' && detail" class="col-2 text-center pb-3">
-            <img src="{{ `https://backend-consultas.muninuevochimbote.gob.pe/api/photos/${detail?.numero}` }}" alt="" style="height: auto; width: 100%; background-color: #d3d3d3;">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div *ngIf="selectedType == 'dni' && detail" class="flex justify-center items-center px-4">
+            <img src="{{ `https://backend-consultas.muninuevochimbote.gob.pe/api/photos/${detail?.numero}` }}" alt="" class="w-32 rounded-lg shadow-md bg-gray-300" />
           </div>
-          <div [ngClass]="{ 'col-10': selectedType == 'dni', 'col-12': selectedType !== 'dni' }">
-            <div class="row">
-              <div class="col-12 col-md-4">
-                <div class="form-group mb-3">
-                  <label for="nroDoc" class="form-label text-uppercase">N° {{ selectedType }}</label>
-                  <div class="input-group">
-                    <span class="input-group-text">
-                      <i class="si-italic"></i>
-                    </span>
-                    <input [value]="selectedType == 'dni' ? detail?.numero : detail?.ruc" type="text" class="form-control" id="nroDoc" readonly>
-                  </div>
+          <div class="w-full flex flex-col gap-4 p-1">
+            <div class="grid md:grid-cols-4 gap-4 w-full">
+              <div class="field">
+                <label for="nroDoc" class="uppercase">N° {{ selectedType }}</label>
+                <div class="input-control input-control__group input-control__readonly">
+                  <span class="">
+                    <i class="si-italic"></i>
+                  </span>
+                  <input [value]="selectedType == 'dni' ? detail?.numero : detail?.ruc" type="text" class="w-full" id="nroDoc" readonly>
                 </div>
               </div>
-              <div class="col-12 col-md-8">
-                <div class="form-group mb-3">
-                  <label for="nombreRazonSocial" class="form-label text-uppercase">{{ selectedType == 'dni' ? 'Nombre' : 'Razón Social' }}</label>
-                  <input [value]="selectedType == 'dni' ? detail?.nombre_completo : detail?.nombre_o_razon_social" type="text" class="form-control" id="nombreRazonSocial" readonly>
-                </div>
+            </div>
+            <div class="grid md:grid-cols-4 gap-4">
+              <div class="field md:col-span-2">
+                <label for="nombreRazonSocial" class="uppercase">{{ selectedType == 'dni' ? 'Nombre' : 'Razón Social' }}</label>
+                <input [value]="selectedType == 'dni' ? detail?.nombre_completo : detail?.nombre_o_razon_social" type="text" class="input-control" id="nombreRazonSocial" readonly>
               </div>
-              <div class="col-12">
-                <div class="form-group mb-3">
-                  <label for="direccion" class="form-label text-uppercase">Dirección</label>
-                  <input [value]="detail?.direccion ?? ''" type="text" class="form-control" id="direccion" readonly>
-                </div>
+              <div class="field md:col-span-2">
+                <label for="direccion" class="uppercase">Dirección</label>
+                <input [value]="detail?.direccion ?? ''" type="text" class="input-control" id="direccion" readonly>
               </div>
-              <div class="col-12 col-md-4" *ngIf="detail?.codigo_verificacion">
-                <div class="form-group mb-3">
-                  <label for="codigoVerificacion" class="form-label text-uppercase">Cód. Verificación</label>
-                  <input [value]="detail?.codigo_verificacion" type="text" class="form-control" id="codigoVerificacion" readonly>
-                </div>
+              <div class="field" *ngIf="detail?.codigo_verificacion">
+                <label for="codigoVerificacion" class="uppercase">Cód. Verificación</label>
+                <input [value]="detail?.codigo_verificacion" type="text" class="input-control" id="codigoVerificacion" readonly>
               </div>
-              <div class="col-12 col-md-4" *ngIf="detail?.estado">
-                <div class="form-group mb-3">
-                  <label for="estado" class="form-label text-uppercase">Estado</label>
-                  <input [value]="detail?.estado" type="text" class="form-control" id="estado" readonly>
-                </div>
+              <div class="field" *ngIf="detail?.estado">
+                <label for="estado" class="form-label text-uppercase">Estado</label>
+                <input [value]="detail?.estado" type="text" class="input-control" id="estado" readonly>
               </div>
-              <div class="col-12 col-md-4" *ngIf="detail?.condicion">
-                <div class="form-group mb-3">
-                  <label for="condicion" class="form-label text-uppercase">Condición</label>
-                  <input [value]="detail?.condicion" type="text" class="form-control" id="condicion" readonly>
-                </div>
+              <div class="field" *ngIf="detail?.condicion">
+                <label for="condicion" class="form-label text-uppercase">Condición</label>
+                <input [value]="detail?.condicion" type="text" class="input-control" id="condicion" readonly>
               </div>
             </div>
           </div>

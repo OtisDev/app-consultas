@@ -1,49 +1,54 @@
 <app-loading-overlay *ngIf="loading"></app-loading-overlay>
-<nav class="sidebar-wrapper">
+<nav class="sidebar">
   <!-- Sidebar brand starts -->
-  <div class="sidebar-brand ">
-    <a href="#" onclick="event.preventDefault()" class="logo">
+  <div class="sidebar-brand">
+    <!-- <a href="#" onclick="event.preventDefault()" class="logo">
       <img src="assets/images/logo.png" alt="MDNCH Dashboards" />
-    </a>
-    <div class="text-center">
-      <h4 class="text-white fs-6 mt-2">SISTEMA</h4>
-      <h4 class="text-white fs-6 mt-2">DE CONSULTAS</h4>
+    </a> -->
+    <div class="flex flex-col w-full">
+      <h4 class="text-white text-2xl font-bold mt-4">SC</h4>
+      <p class="text-white text-sm subtitle">SISTEMA</p>
+      <p class="text-white text-sm subtitle">DE CONSULTAS</p>
     </div>
   </div>
   <!-- Sidebar brand starts -->
 
   <!-- Sidebar menu starts -->
-  <div class="sidebar-menu">
-    <div class="sidebarMenuScroll">
-      <ul>
-        <!-- || activeChildren(item.children,i) -->
-        <li *ngFor="let item of menuItems; let i = index" [ngClass]="
-                {
-                  'sidebar-dropdown':item.children.length > 0,
-                  'active' : activeIndex === i
-                }
-                 " [routerLinkActive]="item.children.length > 0 ? '' : 'active-page-link'"
-          [routerLinkActiveOptions]="{ exact: true }">
-          <a [routerLink]="item.path" *ngIf="item.children.length == 0"
-            (click)="pressClick(item.children.length > 0); toggleMenu(i)">
-            <i class="{{item.icon}}"></i>
-            <span class="menu-text">{{item.name}}</span>
-          </a>
-          <a *ngIf="item.children.length > 0" href="javascript:void(0)" (click)="toggleMenu(i)">
-            <i class="{{item.icon}}"></i>
-            <span class="menu-text">{{item.name}}</span>
-          </a>
-          <div [ngStyle]="{'display': activeIndex === i ? 'block' : 'none'}" class="sidebar-submenu">
-            <ul>
-              <li *ngFor="let child of item.children">
-                <a [routerLink]="child.path" routerLinkActive="current-page" (click)="pressClick()"
-                  [routerLinkActiveOptions]="{ exact: true }">{{child.name}}</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </div>
+  <div class="sidebar-wrapper">
+    <ul>
+      <!-- || activeChildren(item.children,i) -->
+      <li *ngFor="let item of menuItems; let i = index"
+        [ngClass]="{
+          'sidebar-dropdown':item.children.length > 0,
+          'active' : activeIndex === i
+        }"
+      >
+        <a [routerLink]="item.path" *ngIf="item.children.length == 0" class="sidebar-link"
+          (click)="toggleMenu(i)"
+          routerLinkActive="sidebar-link__active" [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i class="{{item.icon}}"></i>
+          <span class="menu-text">{{item.name}}</span>
+        </a>
+        <a *ngIf="item.children.length > 0" href="javascript:void(0)" (click)="toggleMenu(i)" class="sidebar-link">
+          <i class="{{item.icon}}"></i>
+          <span class="menu-text">{{item.name}}</span>
+        </a>
+        <div [ngStyle]="{'display': activeIndex === i ? 'block' : 'none'}" class="sidebar-submenu">
+          <ul>
+            <li *ngFor="let child of item.children">
+              <a
+                [routerLink]="child.path" class="sidebar-link" routerLinkActive="sidebar-link__active"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                <i class="{{child.icon}}"></i>
+                <span class="menu-text">{{child.name}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
   </div>
   <!-- Sidebar menu ends -->
 </nav>

@@ -1,92 +1,89 @@
 <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
 <app-filter-client (filterChange)="onFilterChange($event)"></app-filter-client>
 
-<div class="row">
-  <div class="col-12">
-    <div class="form-section-title">
-      Resultados
-      <button class="btn btn-primary btn-primary-2 btn-sm float-end" (click)="openModalCreateUpdate()">Agregar Cliente</button>
+<div class="card">
+  <div class="card-header">
+    <div class="card-title text-lg">Lista de Clientes</div>
+    <div>
+      <button class="btn btn-primary btn-md" (click)="openModalCreateUpdate()">Agregar Cliente</button>
     </div>
   </div>
-  <div class="col-12">
+  <div class="table-wrapper">
+    <table class="table table-bordered table-sm align-middle" [width]="'100%'">
+      <thead class="thead">
+        <tr class="text-center text-sm">
+          <th width="5%">N°</th>
+          <th width="20%">Nombre</th>
+          <th width="50%">Api Token</th>
+          <th width="15%">Situacion</th>
+          <th width="10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if(!load){
+        <tr>
+          <td colspan="6" class="text-center">
+            <app-loader></app-loader>
+          </td>
+        </tr>
+        }
 
-    <div class="table-responsive table-container">
-      <table class="table table-bordered table-sm align-middle" [width]="'100%'">
-        <thead class="thead">
-          <tr class="text-center text-sm">
-            <th width="5%">N°</th>
-            <th width="20%">Nombre</th>
-            <th width="50%">Api Token</th>
-            <th width="15%">Situacion</th>
-            <th width="10%"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @if(!load){
+        @for(item of data; track $index){
+        <tr>
+          <td class="text-center">
+            {{$index+1}}
+          </td>
+          <td class="text-center">{{item.name | uppercase}}</td>
+          <td class="text-center">
+            <div class="input-control input-control__group">
+              <input type="text" class="w-full" [value]="item.api_token" readonly>
+              <button class="btn btn-success btn-md" type="button"
+              [cdkCopyToClipboard] = "item.api_token"
+              (click)="copyToClipboard($index)">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+            <div *ngIf="copiedIndex === $index" class="mt-2 text-green-500">
+              ¡Copiado al portapapeles!
+            </div>
+          </td>
+
+          <td class="text-center">
+            <span [innerHTML]="estado(item)"></span>
+          </td>
+          <td class="text-center">
+            <div class="flex flex-row gap-1">
+              <button class="btn btn-info btn-md" title="Editar Cliente" (click)="openModalCreateUpdate(item)">
+                <i class="si-pencil"></i>
+              </button>
+
+              <button class="btn btn-md"
+              [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-warning': item.state.toString() == '1'}" title="Bloquear Cliente"
+              (click)="activeBloqued(item)">
+                <i class="bi " [ngClass]="{'bi-shield-check': item.state.toString() == '0', 'bi-shield-slash': item.state.toString() == '1'}"></i>
+              </button>
+
+              <button class="btn btn-md btn-danger" (click)="remove(item)">
+                <i class="si-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }@empty {
+          @if(load){
           <tr>
-            <td colspan="6" class="text-center">
-              <app-loader></app-loader>
+            <td colspan="6">
+              <div class="alert alert-danger text-center">
+                Sin registros
+              </div>
             </td>
           </tr>
           }
-
-          @for(item of data; track $index){
-          <tr>
-            <td class="text-center">
-              {{$index+1}}
-            </td>
-            <td class="text-center">{{item.name | uppercase}}</td>
-            <td class="text-center">
-              <div class="input-group">
-                <input type="text" class="form-control form-control-sm" [value]="item.api_token" readonly>
-                <button class="btn btn-outline-success btn-sm" type="button"
-                [cdkCopyToClipboard] = "item.api_token"
-                (click)="copyToClipboard($index)">
-                  <i class="bi bi-clipboard"></i>
-                </button>
-              </div>
-              <div *ngIf="copiedIndex === $index" class="mt-2 text-success">
-                ¡Copiado al portapapeles!
-              </div>
-            </td>
-
-            <td class="text-center">
-              <span [innerHTML]="estado(item)"></span>
-            </td>
-            <td class="text-center">
-              <div class="btn-group">
-                <button class="btn btn-info btn-sm" title="Editar Cliente" (click)="openModalCreateUpdate(item)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-
-                <button class="btn btn-sm"
-                [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-warning': item.state.toString() == '1'}" title="Bloquear Cliente"
-                (click)="activeBloqued(item)">
-                  <i class="bi " [ngClass]="{'bi-shield-check': item.state.toString() == '0', 'bi-shield-slash': item.state.toString() == '1'}"></i>
-                </button>
-
-                <button class="btn btn-sm btn-danger" (click)="remove(item)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          }@empty {
-            @if(load){
-            <tr>
-              <td colspan="6">
-                <div class="alert alert-danger text-center">
-                  Sin registros
-                </div>
-              </td>
-            </tr>
-            }
-          }
-        </tbody>
-      </table>
-    </div>
-    <div class="mt-3">
-      <app-paginator *ngIf="loadPaginator" [paginate]="paginate" (pageChange)="onPageChange($event)"></app-paginator>
-    </div>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-3">
+    <app-paginator *ngIf="loadPaginator" [paginate]="paginate" (pageChange)="onPageChange($event)"></app-paginator>
   </div>
 </div>

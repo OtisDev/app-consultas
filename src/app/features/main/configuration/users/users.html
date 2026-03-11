@@ -1,81 +1,79 @@
-<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
-
 <app-filtro-user (filterChange)="onFilterChange($event)"></app-filtro-user>
 
-<div class="row">
-  <div class="col-12">
-    <div class="form-section-title">
-      Resultados
-      <button class="btn btn-primary btn-primary-2 btn-sm float-end" (click)="openModalUser()">Agregar Usuario</button>
+<div class="card mt-4">
+  <div class="card-header">
+    <div class="card-title">Resultados</div>
+    <div>
+      <button class="btn btn-success btn-md" (click)="openModalUser()">
+        <i class="si-plus"></i>
+        <span>Agregar Usuario</span>
+      </button>
     </div>
   </div>
-  <div class="col-12">
+  <div class="table-wrapper">
+    <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+    <table class="table table-bordered" [width]="'100%'">
+      <thead class="thead">
+        <tr class="text-center text-sm">
+          <th width="5%">N°</th>
+          <th width="30%">Nombres Y Apellidos</th>
+          <th width="15%">Usuario</th>
+          <th width="20%">Perfil</th>
+          <th width="20%">Situacion</th>
+          <th width="10%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if(!load){
+        <tr>
+          <td colspan="6" class="text-center">
+            <app-loader></app-loader>
+          </td>
+        </tr>
+        }
 
-    <div class="table-responsive table-container">
-      <table class="table table-bordered table-sm align-middle" [width]="'100%'">
-        <thead class="thead">
-          <tr class="text-center text-sm">
-            <th width="5%">N°</th>
-            <th width="30%">Nombres Y Apellidos</th>
-            <th width="15%">Usuario</th>
-            <th width="20%">Perfil</th>
-            <th width="20%">Situacion</th>
-            <th width="10%"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @if(!load){
+        @for(item of data; track $index){
+        <tr>
+          <td class="text-center">
+            {{$index+1}}
+          </td>
+          <td class="text-center">{{item.name | uppercase}}</td>
+          <td class="text-center">{{item.username | uppercase}}</td>
+          <td class="text-center">
+            {{profilesAssigned(item) | uppercase}}
+          </td>
+          <td class="text-center">
+            <span [innerHTML]="estado(item)"></span>
+          </td>
+          <td class="text-center">
+            <div class="flex flex-row gap-1 justify-center">
+              <button class="btn btn-info btn-md" title="Editar Usuario" (click)="openModalUser(item)">
+                <i class="si-pencil"></i>
+              </button>
+
+              <button class="btn btn-md"
+              [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-danger': item.state.toString() == '1'}" title="Bloquear Usuario"
+              (click)="activeBloquedUser(item)">
+                <i class="bi " [ngClass]="{'bi-person-check': item.state.toString() == '0', 'bi-person-x': item.state.toString() == '1'}"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }@empty {
+          @if(load){
           <tr>
-            <td colspan="6" class="text-center">
-              <img src="assets/images/load.gif" style="width: 50px; margin-right: 10px;">
-              <strong> Cargando...</strong>
-            </td>
-          </tr>
-          }
-
-          @for(item of data; track $index){
-          <tr>
-            <td class="text-center">
-              {{$index+1}}
-            </td>
-            <td class="text-center">{{item.name | uppercase}}</td>
-            <td class="text-center">{{item.username | uppercase}}</td>
-            <td class="text-center">
-              {{profilesAssigned(item) | uppercase}}
-            </td>
-            <td class="text-center">
-              <span [innerHTML]="estado(item)"></span>
-            </td>
-            <td class="text-center">
-              <div class="btn-group">
-                <button class="btn btn-info btn-sm" title="Editar Usuario" (click)="openModalUser(item)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-
-                <button class="btn btn-sm"
-                [ngClass]="{'btn-success':item.state.toString() == '0', 'btn-danger': item.state.toString() == '1'}" title="Bloquear Usuario"
-                (click)="activeBloquedUser(item)">
-                  <i class="bi " [ngClass]="{'bi-person-check': item.state.toString() == '0', 'bi-person-x': item.state.toString() == '1'}"></i>
-                </button>
+            <td colspan="6">
+              <div class="alert alert-danger text-center">
+                Sin registros
               </div>
             </td>
           </tr>
-          }@empty {
-            @if(load){
-            <tr>
-              <td colspan="6">
-                <div class="alert alert-danger text-center">
-                  Sin registros
-                </div>
-              </td>
-            </tr>
-            }
           }
-        </tbody>
-      </table>
-    </div>
-    <div class="mt-3">
-      <app-paginator *ngIf="loadPaginator" [paginate]="paginate" (pageChange)="onPageChange($event)"></app-paginator>
-    </div>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-3">
+    <app-paginator *ngIf="loadPaginator" [paginate]="paginate" (pageChange)="onPageChange($event)"></app-paginator>
   </div>
 </div>

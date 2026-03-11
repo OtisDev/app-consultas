@@ -1,25 +1,22 @@
-<div class="card border-primary mb-3">
-  <div class="card-header">
-    <div class="card-title text-primary">Ingresar RUC</div>
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <div class="field required">
+    <label for="ruc">RUC</label>
+    <div class="input-control input-control__group">
+      <input 
+        type="text" class="w-full" 
+        name="ruc"
+        formControlName="ruc"
+        placeholder="00000000000"
+        appUppercase appOnlyNumber
+      >
+      <button type="submit" class="btn btn-primary btn-md" [disabled]="loading">
+        <span class="icon">
+          <i class="bi bi-search"></i>
+        </span>
+        Consultar
+      </button>
+    </div>
+    <div class="msg-error" *ngIf="myForm.get('ruc')?.invalid && myForm.get('ruc')?.touched">RUC inválido</div>
   </div>
-  <div class="card-body">
-    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <div class="input-group">
-          <input type="text" class="form-control" formControlName="ruc" placeholder="00000000000"
-          appUppercase appOnlyNumber
-          >
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
-            <span class="icon">
-              <i class="bi bi-search"></i>
-            </span>
-            Consultar
-          </button>
-          <div class="invalid-feedback" *ngIf="myForm.get('ruc')?.invalid && myForm.get('ruc')?.touched">RUC inválido</div>
-        </div>
-      </div>
-
-    </form>
-  </div>
-</div>
+</form>
 

@@ -1,46 +1,37 @@
-<form [formGroup]="myForm" class="filter-container">
-  <div class="row">
-    <div class="col-12">
-      <div class="form-section-title">Búsqueda</div>
-    </div>
+<form [formGroup]="myForm" class="card">
+  <h3 class="card-title">Filtro de búsqueda</h3>
 
-    <div class="col-md-4 col-12">
-      <div class="mb-3">
-        <label class="form-label">Año</label>
-        <select class="form-control" formControlName="year" (change)="onApplyFilter()">
+  <div class="grid md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div class="field">
+        <label>Año</label>
+        <select class="input-control" formControlName="year" (change)="onApplyFilter()">
           <option *ngFor="let item of yearList" [value]="item">{{ item }}</option>
         </select>
       </div>
-    </div>
-
-    <div class="col-md-4 col-12">
-      <div class="mb-3">
-        <label class="form-label">Cliente</label>
-        <select class="form-control" formControlName="client_id" (change)="onApplyFilter()">
+      <div class="field md:col-span-2">
+        <label>Cliente</label>
+        <select class="input-control" formControlName="client_id" (change)="onApplyFilter()">
           <option value="">-Todos-</option>
           <option *ngFor="let item of clientList" [value]="item.id">{{ item.name | uppercase}}</option>
         </select>
       </div>
-    </div>
-    <div class="col-md-4 col-12">
-      <div class="mb-3">
-        <label class="form-label">Consulta</label>
-        <select class="form-control" formControlName="endpoint_id" (change)="onApplyFilter()">
+      <div class="field">
+        <label>Consulta</label>
+        <select class="input-control" formControlName="endpoint_id" (change)="onApplyFilter()">
           <option *ngIf="endpointList.length === 0" value="0">-Seleccionar-</option>
           <option *ngFor="let item of endpointList" [value]="item.id">{{ item.name | uppercase}}</option>
         </select>
       </div>
-    </div>
-    <div class="col-12 mb-3" style="display:none">
+      <div class="flex items-end gap-2">
+        <button #btn type="button" (click)="onApplyFilter()" class="btn btn-primary">
+          <i class="si-search"></i>
+          <span>Buscar</span>
+        </button>
 
-      <button #btn type="button" (click)="onApplyFilter()" class="btn btn-primary btn-primary-2 btn-sm me-2">
-        Buscar
-      </button>
-
-      <button type="button" (click)="resetForm()" class="btn btn-warning btn-sm">
-        Limpiar
-      </button>
-
-    </div>
+        <button type="button" (click)="resetForm()" class="btn btn-warning">
+          <i class="si-brush"></i>
+          <span>Limpiar</span>
+        </button>
+      </div>
   </div>
 </form>

@@ -1,15 +1,15 @@
-<div class="w-80 d-lg-flex justify-content-md-end justify-content-sm-center align-items-center">
+<div class="flex w-full items-center justify-center">
   <mat-paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize"
     [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
     [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
     aria-label="Select page">
   </mat-paginator>
-  <div class="w-20 d-sm-flex justify-content-sm-end">
-    <div class="input-group w-50-c">
+  <div class="hidden md:flex items-center gap-4 ml-2">
+    <div class="input-control input-control__group">
       <input type="number" min="1" [max]="length" [(ngModel)]="customPage" (keyup.enter)="goToCustomPage()"
-        placeholder="Ir a pág." class="form-control" />
+        placeholder="Ir a pág." class="w-full" />
       <span class="input-group-text">de {{last_page}}</span>
-      <button class="btn btn-light" (click)="goToCustomPage()">Ir a pág.</button>
+      <button class="btn btn-light btn-md" (click)="goToCustomPage()">Ir a pág.</button>
     </div>
   </div>
 </div>

@@ -8,6 +8,8 @@ import { SharedModule } from '../../shared/shared-module';
 import { AuthService } from '../../core/services/auth/auth-service';
 import { User, UserOfficeProfile, UserPermisionsRequest, UserR } from '../../models/user.model';
 import { UserService } from '../../core/services/user/user-service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-main-layout',
@@ -22,15 +24,20 @@ export class MainLayout {
   private renderer! : Renderer2;
   changeProfile : boolean = false;
   requestProfile! : UserPermisionsRequest | null;
+  private breakpointSub!: Subscription;
+  isMobile: boolean = false;
 
   user! : User;
   officesProfiles : UserOfficeProfile[] = [];
   profileSession! : UserOfficeProfile | null;
 
-  constructor(private router: Router, private route : ActivatedRoute,
+  constructor(
+    private router: Router,
+    private route : ActivatedRoute,
     rendererFactory: RendererFactory2,
     private authService : AuthService,
-    private userService : UserService
+    private userService : UserService,
+    private breakpointObserver: BreakpointObserver
   ){
     this.page = this.dataActivatedRoute(this.route);
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -48,7 +55,7 @@ export class MainLayout {
     if(!click){
       return;
     }
-    this.toggleClass(this.pageWrapper,"toggled");
+    this.toggleClass(this.pageWrapper, "sidebar__minimized");
   }
 
   toggleClass(el : ElementRef, css : string){
@@ -116,4 +123,33 @@ export class MainLayout {
 
   }
 
+  ngAfterViewInit() {
+    this.breakpointSub = this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Small, Breakpoints.XSmall, Breakpoints.Medium])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+
+        if (this.isMobile) {
+          this.minimizeSidebar();
+        } else {
+          this.restoreSidebar();
+        }
+      });
+  }
+
+  minimizeSidebar() {
+    if (!this.pageWrapper.nativeElement.classList.contains('sidebar__minimized')) {
+      this.toggleClass(this.pageWrapper, 'sidebar__minimized');
+    }
+  }
+
+  restoreSidebar() {
+    if (this.pageWrapper.nativeElement.classList.contains('sidebar__minimized')) {
+      this.toggleClass(this.pageWrapper, 'sidebar__minimized');
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.breakpointSub?.unsubscribe();
+  }
 }

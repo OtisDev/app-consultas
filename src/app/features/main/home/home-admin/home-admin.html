@@ -1,43 +1,34 @@
 <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
 <app-filtro-admin (filterChange)="onFilterChange($event)"></app-filtro-admin>
-<div class="row">
-  <div class="col-12">
-    <div class="form-section-title">
-      Resultados
-      <!-- <button class="btn btn-primary btn-primary-2 btn-sm float-end" (click)="openModalCreateUpdate()">Agregar Cliente</button> -->
-    </div>
-  </div>
-  <div class="col-12">
-    <div class="alert alert-warning text-center mb-3" *ngIf="message.length > 0">
-      <p *ngFor="let msg of message">{{ msg }}</p>
-    </div>
-  </div>
-  <div class="col-md-6 col-12">
-    <div class="card shadow-lg mb-3">
-      <div class="card-header">
-        <strong>Historial diario de consultas</strong>
-        <div class="float-end">
-          <select class="form-control" name="month" [(ngModel)]="currentMonth">
-            <option *ngFor="let month of monthList" [value]="month.value">{{ month.name }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="card-body">
-        @if(diaryReport.length === 0){
-          <div class="alert alert-warning text-center">No hay datos disponibles para el mes seleccionado.</div>
-        }@else{
-          <ngx-charts-area-chart [results]="diaryReport" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
-          [xAxisLabel]="'Días del Mes'">
-          </ngx-charts-area-chart>
-        }
 
+<h2 class="text-primary-500 text-2xl font-bold my-4">Resultados</h2>
+
+<div class="bg-yellow-100 text-yellow-800 text-center mb-3" *ngIf="message.length > 0">
+  <p *ngFor="let msg of message">{{ msg }}</p>
+</div>
+
+<div class="grid lg:grid-cols-2 gap-4">
+  <div class="card">
+    <div class="card-header">
+      <strong>Historial diario de consultas</strong>
+      <div class="float-end">
+        <select class="input-control" name="month" [(ngModel)]="currentMonth">
+          <option *ngFor="let month of monthList" [value]="month.value">{{ month.name }}</option>
+        </select>
       </div>
     </div>
+    <div class="card-body">
+      @if(diaryReport.length === 0){
+        <div class="alert alert-warning text-center">No hay datos disponibles para el mes seleccionado.</div>
+      }@else{
+        <ngx-charts-area-chart [results]="diaryReport" [xAxis]="true" [yAxis]="true" [yAxisLabel]="'Cantidad de Consultas'"
+        [xAxisLabel]="'Días del Mes'">
+        </ngx-charts-area-chart>
+      }
+    </div>
   </div>
-
-  <div class="col-md-6 col-12">
-    <div class="card shadow-lg mb-3">
-      <div class="card-header">
+  <div class="card">
+    <div class="card-header">
         <strong>Historial mensual de consultas</strong>
       </div>
       <div class="card-body">
@@ -48,8 +39,6 @@
             [xAxisLabel]="'Días del Mes'">
           </ngx-charts-area-chart>
         }
-
       </div>
-    </div>
   </div>
 </div>

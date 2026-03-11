@@ -25,13 +25,15 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              //"node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/animate.css",
               "src/assets/fonts/bootstrap/bootstrap-icons.css",
-              "src/assets/css/main.css",
-              "src/styles.css"
+              //"src/assets/css/main.css",
+              //"src/styles.css",
+              "src/tailwindcss.css"
             ],
             "scripts": [
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
             "polyfills": [

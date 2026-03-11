@@ -1,68 +1,69 @@
-<div class="row">
-  <div class="col-md-4 col-12 mb-3">
-    <app-filtro-dni (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-dni>
-    <app-loader *ngIf="loading"></app-loader>
-    <div *ngIf="!loading && load && !data.nombre_completo" class="text-center alert alert-warning ">
-      {{message}}
-    </div>
-    <div *ngIf="!loading && load && data.nombre_completo" class="text-center alert alert-success ">
-      Datos encontrados correctamente.
+<div class="grid lg:grid-cols-4 gap-4">
+  <div>
+    <div class="card flex flex-col gap-3">
+      <app-filtro-dni (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-dni>
+      <div *ngIf="!loading && load && !data.nombre_completo" class="text-center bg-yellow-100 text-yellow-600 rounded-md p-2">
+        {{message}}
+      </div>
+      <div *ngIf="!loading && load && data.nombre_completo" class="text-center bg-green-100 text-green-600 rounded-md p-2">
+        Datos encontrados correctamente.
+      </div>
     </div>
   </div>
-  <div class="col-md-8 col-xl-6 col-12 mb-3">
+  <div class="lg:col-span-3">
     <div class="card border-primary">
       <div class="card-header">
         <div class="card-title text-primary">Resultados</div>
       </div>
-      <div class="card-body">
+      <div class="relative flex flex-col gap-4">
+        <app-loader *ngIf="loading" [overlay]="true"></app-loader>
         <form>
-          <div class="row">
-            <div class="col-12 col-md-5 col-lg-3 mb-3 text-center">
-              <img src="{{ data.photo_url }}" alt="" style="height: auto; width: 100%; max-width: 200px; background-color: #d3d3d3;">
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex justify-center items-center px-4">
+              <img src="{{ data.photo_url }}" alt="" class="w-36 rounded-lg shadow-md bg-gray-300">
             </div>
-            <div class="col-12 col-md-7 col-lg-9">
-              <div class="row">
-                <div class="col-lg-6 col-12 mb-3">
-                  <label class="form-label"><strong>Apellido Paterno</strong></label>
-                  <input type="text" class="form-control" name="apellido_paterno" [(ngModel)]="data.apellido_paterno" disabled>
+            <div class="w-full">
+              <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                <div class="field">
+                  <label>Apellido Paterno</label>
+                  <input type="text" class="input-control" name="apellido_paterno" [(ngModel)]="data.apellido_paterno" disabled>
                 </div>
-                <div class="col-lg-6 col-12 mb-3">
-                  <label class="form-label"><strong>Apellido Materno</strong></label>
-                  <input type="text" class="form-control" name="apellido_materno" [(ngModel)]="data.apellido_materno" disabled>
+                <div class="field">
+                  <label>Apellido Materno</label>
+                  <input type="text" class="input-control" name="apellido_materno" [(ngModel)]="data.apellido_materno" disabled>
                 </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label"><strong>Nombres</strong></label>
-                  <input type="text" class="form-control" name="nombres" [(ngModel)]="data.nombres" disabled>
+                <div class="field">
+                  <label>Nombres</label>
+                  <input type="text" class="input-control" name="nombres" [(ngModel)]="data.nombres" disabled>
                 </div>
-                <div class="col-12 mb-3" *ngIf="data.direccion">
-                  <label class="form-label"><strong>Dirección</strong></label>
-                  <input type="text" class="form-control" name="direccion" [(ngModel)]="data.direccion" disabled>
+                <div class="field">
+                  <label class="form-label">Cód. Verificación</label>
+                  <input type="text" class="input-control" name="codigo_verificacion" [(ngModel)]="data.codigo_verificacion" disabled>
                 </div>
-                <div class="col-4 mb-3" *ngIf="data.departamento">
-                  <label class="form-label"><strong>Departamento</strong></label>
-                  <input type="text" class="form-control" name="departamento" [(ngModel)]="data.departamento" disabled>
+                <div class="field md:col-span-2">
+                  <label class="form-label">Nombre Completo</label>
+                  <input type="text" class="input-control" name="nombre_completo" [(ngModel)]="data.nombre_completo" disabled>
                 </div>
-                <div class="col-4 mb-3" *ngIf="data.provincia">
-                  <label class="form-label"><strong>Provincia</strong></label>
-                  <input type="text" class="form-control" name="provincia" [(ngModel)]="data.provincia" disabled>
+                <div class="field md:col-span-2" *ngIf="data.direccion">
+                  <label>Dirección</label>
+                  <input type="text" class="input-control" name="direccion" [(ngModel)]="data.direccion" disabled>
                 </div>
-                <div class="col-4 mb-3" *ngIf="data.distrito">
-                  <label class="form-label"><strong>Distrito</strong></label>
-                  <input type="text" class="form-control" name="distrito" [(ngModel)]="data.distrito" disabled>
+                <div class="field" *ngIf="data.departamento">
+                  <label class="form-label">Departamento</label>
+                  <input type="text" class="input-control" name="departamento" [(ngModel)]="data.departamento" disabled>
                 </div>
-                <div class="col-lg-8 col-12 mb-3">
-                  <label class="form-label"><strong>Nombre Completo</strong></label>
-                  <input type="text" class="form-control" name="nombre_completo" [(ngModel)]="data.nombre_completo" disabled>
+                <div class="field" *ngIf="data.provincia">
+                  <label class="form-label">Provincia</label>
+                  <input type="text" class="input-control" name="provincia" [(ngModel)]="data.provincia" disabled>
                 </div>
-                <div class="col-lg-4 col-12 mb-3">
-                  <label class="form-label"><strong>Cód. Verificación</strong></label>
-                  <input type="text" class="form-control" name="codigo_verificacion" [(ngModel)]="data.codigo_verificacion" disabled>
+                <div class="field" *ngIf="data.distrito">
+                  <label class="form-label">Distrito</label>
+                  <input type="text" class="input-control" name="distrito" [(ngModel)]="data.distrito" disabled>
                 </div>
               </div>
             </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>

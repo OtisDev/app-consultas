@@ -7,7 +7,7 @@ export const mainRoutes: Routes = [
       import('../features/main/home/home').then(m => m.Home),
     data:{
       name:"Inicio",
-      icon: 'bi bi-house',
+      icon: 'si-home',
       allow :['all']
     }
   },
@@ -17,7 +17,7 @@ export const mainRoutes: Routes = [
       import('../features/main/configuration/users/users').then(m => m.Users),
     data:{
       name:"Usuarios",
-      icon: 'bi bi-gear',
+      icon: 'si-user',
       allow :['AS']
     }
   },
@@ -27,7 +27,7 @@ export const mainRoutes: Routes = [
       import('../features/main/clients/clients').then(m => m.Clients),
     data:{
       name:"Clientes",
-      icon: 'bi bi-gear',
+      icon: 'si-grid',
       allow :['AS','SUP']
     }
   },
@@ -37,7 +37,7 @@ export const mainRoutes: Routes = [
       import('../features/main/consult/dni/dni').then(m => m.Dni),
     data:{
       name:"Consulta DNI",
-      icon: 'bi bi-gear',
+      icon: 'si-search',
       allow :['all']
     }
   },
@@ -47,7 +47,7 @@ export const mainRoutes: Routes = [
       import('../features/main/consult/ruc/ruc').then(m => m.Ruc),
     data:{
       name:"Consulta RUC",
-      icon: 'bi bi-gear',
+      icon: 'si-search',
       allow :['all']
     }
   },
@@ -57,7 +57,7 @@ export const mainRoutes: Routes = [
       import('../features/main/consult/nombre/nombre').then(m => m.Nombre),
     data:{
       name:"Consulta por nombre",
-      icon: 'si-pencil',
+      icon: 'si-italic',
       allow :['all']
     }
   },

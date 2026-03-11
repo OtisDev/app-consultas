@@ -1,46 +1,47 @@
-<div class="row">
-  <div class="col-md-4 col-12 mb-3">
-    <app-filtro-ruc (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-ruc>
-    <app-loader *ngIf="loading"></app-loader>
-    <div *ngIf="!loading && load && !data.ruc" class="text-center alert alert-warning ">
-      {{message}}
-    </div>
+<div class="grid md:grid-cols-4 gap-4">
+  <div class="">
+    <div class="card flex flex-col gap-3">
+      <app-filtro-ruc (filterChange)="onFilterChange($event)" [loading]="loading"></app-filtro-ruc>
+      <div *ngIf="!loading && load && !data.ruc" class="text-center bg-yellow-100 text-yellow-600 rounded-md p-2">
+        {{message}}
+      </div>
 
-    <div *ngIf="!loading && load && data.ruc" class="text-center alert alert-success ">
-      Datos encontrados correctamente.
+      <div *ngIf="!loading && load && data.ruc" class="text-center bg-green-100 text-green-600 rounded-md p-2">
+        Datos encontrados correctamente.
+      </div>
     </div>
   </div>
-  <div class="col-md-6 col-12 mb-3">
+  <div class="md:col-span-3">
     <div class="card border-primary">
       <div class="card-header">
         <div class="card-title text-primary">Resultados</div>
       </div>
-      <div class="card-body">
+      <div class="relative flex flex-col gap-4">
+        <app-loader *ngIf="loading" [overlay]="true"></app-loader>
         <form>
-          <div class="row">
-            <div class="col-lg-4 col-12 mb-3">
-              <label class="form-label"><strong>N° RUC:</strong></label>
-              <input type="text" class="form-control" name="ruc" [(ngModel)]="data.ruc" disabled>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="field">
+              <label>N° RUC</label>
+              <input type="text" class="input-control" name="ruc" [(ngModel)]="data.ruc" disabled>
             </div>
-            <div class="col-lg-8 col-12 mb-3">
-              <label class="form-label"><strong>Razon Social:</strong></label>
-              <input type="text" class="form-control" name="razon_social" [(ngModel)]="data.nombre_o_razon_social" disabled>
+            <div class="field md:col-span-2">
+              <label>Razon Social</label>
+              <input type="text" class="input-control" name="razon_social" [(ngModel)]="data.nombre_o_razon_social" disabled>
             </div>
-            <div class="col-12 mb-3">
+            <div class="field md:col-span-2">
               <label class="form-label"><strong>Dirección:</strong></label>
-              <input type="text" class="form-control" name="direccion" [(ngModel)]="data.direccion_completa" disabled>
+              <input type="text" class="input-control" name="direccion" [(ngModel)]="data.direccion_completa" disabled>
             </div>
-            <div class="col-lg-8 col-12 mb-3">
-              <label class="form-label"><strong>Estado:</strong></label>
-              <input type="text" class="form-control" name="estado" [(ngModel)]="data.estado" disabled>
+            <div class="field">
+              <label>Estado</label>
+              <input type="text" class="input-control" name="estado" [(ngModel)]="data.estado" disabled>
             </div>
-            <div class="col-lg-4 col-12 mb-3">
-              <label class="form-label"><strong>Condición:</strong></label>
-              <input type="text" class="form-control" name="condicion" [(ngModel)]="data.condicion" disabled>
+            <div class="field">
+              <label>Condición</label>
+              <input type="text" class="input-control" name="condicion" [(ngModel)]="data.condicion" disabled>
             </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>
