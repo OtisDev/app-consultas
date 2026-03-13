@@ -38,6 +38,7 @@ export const API_ROUTES = {
     DAILY: `${environment.apiUrl}/report/diary`,
   },
   CONSULT_NAME: {
+    CONFIG: `${environment.apiUrl}/names/config`,
     SEARCH: `${environment.apiUrl}/names/search`,
     SHOW: (type: string, nro: string) => `${environment.apiUrl}/names/${type}/show/${nro}`,
   }

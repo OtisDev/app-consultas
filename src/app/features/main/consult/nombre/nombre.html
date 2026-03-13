@@ -1,4 +1,4 @@
-<div class="grid md:grid-cols-4 gap-4">
+<div class="grid lg:grid-cols-4 gap-4">
   <div>
     <div class="card flex flex-col gap-4">
       <form [formGroup]="formSearch" (ngSubmit)="onSubmitSearch($event)">
@@ -7,27 +7,35 @@
           <div class="input-control input-control__group">
             <input
               type="text"
-              class="w-full"
               name="nombre"
               formControlName="nombre"
-              placeholder="Pedro Martinez / Empresa SAC"
+              placeholder="APELLIDOS, NOMBRES / EMPRESA SAC"
               appUppercase
               (keypress)="handleKeyPress($event)"
               autocomplete="off"
             />
-            <button type="submit" class="btn btn-primary btn-md" [disabled]="searching">
+            <button *ngIf="formSearch.get('nombre')?.value !== ''" type="button" class="outline-none cursor-pointer text-lg" (click)="formSearch.get('nombre')?.setValue('')">
+              <i class="si-x"></i>
+            </button>
+          </div>
+          <div class="flex justify-between mt-2 gap-2">
+            <button type="button" class="btn btn-secondary" *ngIf="isAdmin && activeButtonConfig" (click)="handleSearchCredentials()" [disabled]="findConfig">
+              <i class="si-sliders"></i>
+              <span>Actualizar Credenciales</span>
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="searching">
               <span class="icon">
                 <i class="bi bi-search"></i>
               </span>
               Consultar
             </button>
           </div>
-          <div class="msg-error" *ngIf="formSearch.get('dni')?.invalid && formSearch.get('dni')?.touched">{{ formSearch.get('dni')?.errors | json }}</div>
+          <div class="msg-error" *ngIf="formSearch.get('nombre')?.invalid && formSearch.get('nombre')?.touched">{{ formSearch.get('nombre')?.errors | json }}</div>
         </div>
       </form>
 
       <div class="relative overflow-y-auto" style="max-height: 450px;" *ngIf="searchPerformed">
-        <app-abs-loader *ngIf="searching"></app-abs-loader>
+        <app-loader *ngIf="searching" [overlay]="true"></app-loader>
         <ul class="flex flex-col gap-2">
           <li *ngIf="results.length == 0" class="p-2">
             <div class="text-center">No se encontraron resultados</div>
@@ -45,12 +53,13 @@
       </div>
     </div>
   </div>
-  <div class="md:col-span-3">
+  <div class="lg:col-span-3">
     <div class="card border-primary">
       <div class="card-header">
         <div class="card-title text-primary">Resultados</div>
       </div>
       <div class="card-body">
+        <app-loader *ngIf="searching" [overlay]="true" text="Consultando..."></app-loader>
         <div class="flex flex-col md:flex-row gap-4">
           <div *ngIf="selectedType == 'dni' && detail" class="flex justify-center items-center px-4">
             <img src="{{ `https://backend-consultas.muninuevochimbote.gob.pe/api/photos/${detail?.numero}` }}" alt="" class="w-32 rounded-lg shadow-md bg-gray-300" />

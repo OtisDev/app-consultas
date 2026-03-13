@@ -13,6 +13,10 @@ export class ConsultNameService {
     private http: HttpClient
   ) { }
 
+  config(html?: string): Observable<Response<any>> {
+    return this.http.post<Response<any>>(API_ROUTES.CONSULT_NAME.CONFIG, { html });
+  }
+
   search(name: string) {
     return this.http.get<Response<NameRecord[]>>(`${API_ROUTES.CONSULT_NAME.SEARCH}`, {
       params: { s: name }

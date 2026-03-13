@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared-module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConsultNameService } from '../../../../core/services/names/consult-name-service';
-import { NameRecord, NameRecordDetail } from '../../../../models/names.model';
-import { AbsLoader } from '../../../../shared/components/abs-loader/abs-loader';
+import { NameRecord } from '../../../../models/names.model';
 import Swal from 'sweetalert2';
+import { Loader } from '../../../../shared/components/loader/loader';
+import { UserService } from '../../../../core/services/user/user-service';
 
 @Component({
   selector: 'app-nombre',
-  imports: [SharedModule, AbsLoader],
+  imports: [SharedModule, Loader],
   templateUrl: './nombre.html',
   styleUrl: './nombre.css'
 })
@@ -20,14 +21,21 @@ export class Nombre {
   selectedType: string = 'dni';
   detail?: any | null;
   searchPerformed: boolean = false;
+  isAdmin!: boolean;
+
+  findConfig: boolean = false;
+  activeButtonConfig: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private consultNameService: ConsultNameService,
+    private userService: UserService,
   ) {
     this.formSearch = this.fb.group({
       nombre: ['', Validators.required]
     });
+
+    this.isAdmin = this.userService.isAdmin();
   }
 
   onSubmitSearch(evt: Event) {
@@ -44,6 +52,11 @@ export class Nombre {
         if(resp.success) {
           this.results = resp.data || [];
           this.searchPerformed = true;
+        } else {
+          if(resp.message.toLocaleLowerCase().includes('sesión vencida') || resp.message.toLocaleLowerCase().includes('solicitud inválida')) {
+            this.activeButtonConfig = true;
+          }
+          Swal.fire('Error', resp.message, 'error');
         }
         this.searching = false;
         this.selectedIndex = -1;
@@ -74,5 +87,22 @@ export class Nombre {
     if (event.key === 'Enter') {
       this.onSubmitSearch(event);
     }
+  }
+
+  handleSearchCredentials() {
+    this.findConfig = true;
+    this.consultNameService.config().subscribe({
+      next: (resp) => {
+        if(resp.success) {
+          this.activeButtonConfig = false;
+          Swal.fire('Actualizado', resp.message, 'success');
+        } else {
+          Swal.fire('Error', resp.message, 'error');
+        }
+      },
+      complete: () => {
+        this.findConfig = false;
+      }
+    });
   }
 }

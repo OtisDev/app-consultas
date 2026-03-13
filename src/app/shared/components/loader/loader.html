@@ -1,6 +1,6 @@
 <div class="my-2 text-center" [ngClass]="{ 'absolute w-full h-full flex items-center justify-center inset-0 bg-white/50': overlay }">
   <div class="flex flex-col items-center gap-2">
     <img src="assets/images/load.gif" style="width: 40px; margin-right: 10px;">
-    <strong>Cargando...</strong>
+    <strong>{{ text || 'Cargando...' }}</strong>
   </div>
 </div>

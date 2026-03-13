@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class Loader {
   @Input() overlay: boolean = false;
+  @Input() text: string | null = null;
 }
